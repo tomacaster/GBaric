@@ -1,0 +1,5 @@
+#pragma once
+
+#define GBARIC_VERSION_MAJOR 
+#define GBARIC_VERSION_MINOR 
+#define GBARIC_VERSION_PATCH 

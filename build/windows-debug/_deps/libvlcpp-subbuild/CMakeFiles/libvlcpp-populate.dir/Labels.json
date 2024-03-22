@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/CMakeFiles/libvlcpp-populate"
+		},
+		{
+			"file" : "D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/CMakeFiles/libvlcpp-populate.rule"
+		},
+		{
+			"file" : "D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/CMakeFiles/libvlcpp-populate-complete.rule"
+		},
+		{
+			"file" : "D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-build.rule"
+		},
+		{
+			"file" : "D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-configure.rule"
+		},
+		{
+			"file" : "D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-download.rule"
+		},
+		{
+			"file" : "D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-install.rule"
+		},
+		{
+			"file" : "D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-mkdir.rule"
+		},
+		{
+			"file" : "D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-patch.rule"
+		},
+		{
+			"file" : "D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-test.rule"
+		},
+		{
+			"file" : "D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"libvlcpp-populate"
+		],
+		"name" : "libvlcpp-populate"
+	}
+}

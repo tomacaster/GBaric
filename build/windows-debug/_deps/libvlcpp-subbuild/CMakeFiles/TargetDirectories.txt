@@ -1,0 +1,3 @@
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/CMakeFiles/libvlcpp-populate.dir
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/CMakeFiles/edit_cache.dir
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/CMakeFiles/rebuild_cache.dir

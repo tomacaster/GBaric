@@ -1,0 +1,14 @@
+# Target labels
+ libvlcpp-populate
+# Source files and their labels
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/CMakeFiles/libvlcpp-populate
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/CMakeFiles/libvlcpp-populate.rule
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/CMakeFiles/libvlcpp-populate-complete.rule
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-build.rule
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-configure.rule
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-download.rule
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-install.rule
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-mkdir.rule
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-patch.rule
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-test.rule
+D:/GBaric/GBaric/build/windows-debug/_deps/libvlcpp-subbuild/libvlcpp-populate-prefix/src/libvlcpp-populate-stamp/libvlcpp-populate-update.rule

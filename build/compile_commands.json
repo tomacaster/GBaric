@@ -1,0 +1,14 @@
+[
+{
+  "directory": "D:/GBaric/GBaric/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DLIBDEFLATE_DLL -DPLATFORM_TYPE=\\\"WIN32\\\" @CMakeFiles/GBaric.dir/includes_CXX.rsp  -pthread -g -std=gnu++20   -mfpmath=sse -msse -msse2 -Wall -O2 -g -o CMakeFiles\\GBaric.dir\\src\\ApplicationBase.cpp.obj -c D:\\GBaric\\GBaric\\src\\ApplicationBase.cpp",
+  "file": "D:/GBaric/GBaric/src/ApplicationBase.cpp",
+  "output": "CMakeFiles/GBaric.dir/src/ApplicationBase.cpp.obj"
+},
+{
+  "directory": "D:/GBaric/GBaric/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DLIBDEFLATE_DLL -DPLATFORM_TYPE=\\\"WIN32\\\" @CMakeFiles/GBaric.dir/includes_CXX.rsp  -pthread -g -std=gnu++20   -mfpmath=sse -msse -msse2 -Wall -O2 -g -o CMakeFiles\\GBaric.dir\\src\\main.cpp.obj -c D:\\GBaric\\GBaric\\src\\main.cpp",
+  "file": "D:/GBaric/GBaric/src/main.cpp",
+  "output": "CMakeFiles/GBaric.dir/src/main.cpp.obj"
+}
+]
