@@ -1,7 +1,7 @@
 #pragma once
 
 #include <gtkmm-4.0/gtkmm.h>
-#include "vlc/vlc.h"
+
 class ApplicationBase : public Gtk::Application
 {
     protected:

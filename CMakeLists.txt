@@ -23,14 +23,7 @@ pkg_check_modules(GTK REQUIRED gtk4)
 pkg_check_modules(GTKMM REQUIRED gtkmm-4.0)
 pkg_check_modules(LIBVLC REQUIRED libvlc)
 
-include(FetchContent)
-FetchContent_Declare(
-  libvlcpp
-  GIT_REPOSITORY https://code.videolan.org/videolan/libvlcpp.git 
-  GIT_TAG        master
-)
-FetchContent_MakeAvailable(libvlcpp)
-message(STATUS "libvlcpp source dir: ${libvlcpp_SOURCE_DIR}")
+
 include(FetchContent)
 FetchContent_Declare(
   nlohmann_json
@@ -41,7 +34,9 @@ FetchContent_MakeAvailable(nlohmann_json)
 
 add_subdirectory(src)
 add_subdirectory(include)
+
 add_executable(${PROJECT_NAME} ${SRC_FILES})
+
 
 if(WIN32)
     set(PLATFORM_TYPE "WIN32")
@@ -59,7 +54,7 @@ if(WIN32)
     #     src/Win32WindowManager.cpp
     # )
     
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBVLC_LIBRARIES}  ${GTK4_LIBRARIES}  ${GTKMM_LIBRARIES} ${CURL_LIBRARIES} Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBVLC_LIBRARIES}  ${GTK4_LIBRARIES}  ${GTKMM_LIBRARIES} ${CURL_LIBRARIES}  Threads::Threads)
     target_compile_options(${PROJECT_NAME} PRIVATE ${GTK_CFLAGS_OTHER} -Wall -O2 -g ) # -fsanitize=address -fno-omit-frame-pointer -g
 
 elseif(UNIX)
@@ -73,7 +68,7 @@ elseif(UNIX)
 
     pkg_check_modules(XCB REQUIRED xcb)
 
-    include_directories(${LIBVLC_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR})
+    include_directories(${LIBVLC_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
     target_link_libraries(${PROJECT_NAME} PRIVATE ${XCB_LDFLAGS} ${LIBS_FILES} X11 ${LIBVLC_LIBRARIES}  ${GTK_LIBRARIES} ${CURL_LIBRARIES} ${GTKMM_LIBRARIES} Threads::Threads)
     target_compile_options(${PROJECT_NAME} PRIVATE ${XCB_CFLAGS} ${GTK_CFLAGS_OTHER} -Wall -O2 )
 else()
@@ -85,8 +80,8 @@ endif()
 target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_TYPE="${PLATFORM_TYPE}"  ) 
 
 add_definitions(${GTK_CFLAGS_OTHER} ${GTKMM_CFLAGS_OTHER})
-
-target_include_directories(${PROJECT_NAME} PRIVATE include ${DESTINATION_DIR} ${CURL_INCLUDE_DIRS} ${GTK_INCLUDE_DIRS} ${GTKMM_INCLUDE_DIRS} ${libvlcpp_SOURCE_DIR})
+find_library(VLCPP_LIB NAMES vlcpp PATHS )
+target_include_directories(${PROJECT_NAME} PRIVATE include ${DESTINATION_DIR} ${CURL_INCLUDE_DIRS} ${GTK_INCLUDE_DIRS} ${GTKMM_INCLUDE_DIRS})
 set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN/lib")
 
 # Adding readme
