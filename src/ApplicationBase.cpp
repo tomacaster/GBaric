@@ -1,27 +1,32 @@
 #include "ApplicationBase.h"
-#include "MainWindow.h"
+
 #include <iostream>
 #include <chrono>
 #include <thread>
 #ifdef __linux__
-#include <gdk/gdkx.h>
+#include <gdk/x11/gdkx.h>
 #else
 #include <gdk/win32/gdkwin32.h>
 #endif
 #include <gtk/gtk.h>
 
-ApplicationBase::ApplicationBase(std::string appName) : Gtk::Application(appName)
+ApplicationBase::ApplicationBase(std::string appName) : Gtk::Application(appName), mainWindow(nullptr)
 {
-auto refBuilder = Gtk::Builder::create();
+
+}
+
+Glib::RefPtr<ApplicationBase> ApplicationBase::create(std::string appName)
+{
+    auto refBuilder = Gtk::Builder::create();
     try
     {
 #ifdef __linux__
-        auto res = refBuilder->add_from_resource("/resources/gui.glade");
+        auto res = refBuilder->add_from_file("/resources/gui.glade");
         if(!res)
         {
-            std::cout << "Cannot load resources" << endl;
+            std::cout << "Cannot load resources" << std::endl;
 
-            return false;
+           // return false;
         }  
 #else
         auto res = refBuilder->add_from_file("resources\\gui.glade");
@@ -35,34 +40,33 @@ auto refBuilder = Gtk::Builder::create();
     }
     catch(const Glib::FileError& ex)
     {
-        std::cerr << "FileError: " << ex.what() << endl;
-        return false;
+        std::cerr << "FileError: " << ex.what() << std::endl;
+        return Glib::RefPtr<ApplicationBase>();
     }
     catch(const Glib::MarkupError& ex)
     {
-        std::cerr << "MarkupError: " << ex.what() << endl;
-        return false;
+        std::cerr << "MarkupError: " << ex.what() << std::endl;
+        return Glib::RefPtr<ApplicationBase>();
     }
     catch(const Gtk::BuilderError& ex)
     {
-        std::cerr << "BuilderError: " << ex.what() << endl;
-        return false;
+        std::cerr << "BuilderError: " << ex.what() << std::endl;
+        return Glib::RefPtr<ApplicationBase>();
     }
 
-    refBuilder->get_widget_derived("MainWindow", windowMain);
-    if(windowMain)
+    //refBuilder->get_widget_derived("MainWindow", mainWindow.get());
+
+    auto r =  Gtk::Builder::get_widget_derived<MainWindow>(refBuilder.get(), "MainWindow", nullptr);
+    if(mainWindow)
     {
-        windowMain->signal_delete_event().connect(sigc::mem_fun(*this, &ApplicationBase::OnDestroy));    
-        windowMain->playButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPlayButtonPressed) ); 
-        windowMain->pauseButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPauseButtonPressed) ); 
-        windowMain->sliderData->sliderData->signal_button_press_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderButtonPressed));
-        windowMain->sliderData->sliderData->signal_button_release_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderReleased));
-        windowMain->renderSurface->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::OnCreateMain));
+        // mainWindow->signal_delete_event().connect(sigc::mem_fun(*this, &ApplicationBase::OnDestroy));    
+        // mainWindow->playButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPlayButtonPressed) ); 
+        // mainWindow->pauseButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPauseButtonPressed) ); 
+        // mainWindow->sliderData->sliderData->signal_button_press_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderButtonPressed));
+        // mainWindow->sliderData->sliderData->signal_button_release_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderReleased));
+        // mainWindow->renderSurface->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::OnCreateMain));
     }
-}
 
-Glib::RefPtr<ApplicationBase> ApplicationBase::create(std::string appName)
-{
     return Glib::RefPtr<ApplicationBase>(new ApplicationBase(appName));
 }
 
