@@ -26,9 +26,9 @@ ApplicationBase::ApplicationBase(std::string appName) : Gtk::Application(appName
         auto res = refBuilder->add_from_file("resources\\gui.glade");
         if(!res)
         {
-            std::cout << "Cannot load resources" << endl;
+            std::cout << "Cannot load resources" << std::endl;
 
-            return false;
+          //  return false;
         } 
 #endif    
     }
