@@ -9,12 +9,14 @@ class ApplicationBase : public Gtk::Application
         ApplicationBase(std::string appName);
 
     public:
-        Glib::RefPtr<ApplicationBase> create(std::string appName);
+        static Glib::RefPtr<ApplicationBase> create(std::string appName);
         void on_startup() override;
         void on_activate() override;
         ~ApplicationBase();
     private:
         Glib::RefPtr<MainWindow> mainWindow;
+        Glib::RefPtr<Gtk::Builder> refBuilder;
+
 
 
 };

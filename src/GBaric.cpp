@@ -10,8 +10,9 @@ int main()
 {
 	auto app = ApplicationBase::create("iotoys.gbaric.player");
 	//auto main = MainWindow();
-	auto player = std::make_unique<VlcPlayer>(true);
-	player->SetMedia("D:\\AVRenderer\\video.mp4");
+	//auto player = std::make_unique<VlcPlayer>(false);
+	//player->SetMedia("D:\\AVRenderer\\video.mp4");
+	
 	app->make_window_and_run<MainWindow>(0, nullptr);
 	
 	std::cout << "End of App" << std::endl;
