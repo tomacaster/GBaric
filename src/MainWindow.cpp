@@ -17,7 +17,6 @@ MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     if(playButton) {} else std::cerr << "Cannot playButton" << std::endl;
     if(pauseButton) {} else std::cerr << "Cannot pauseButton" << std::endl;
     if(scale) {} else std::cerr << "Cannot scale" << std::endl;
-
 }
 
 

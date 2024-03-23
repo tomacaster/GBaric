@@ -7,7 +7,7 @@ class VlcPlayer
     protected:
         
     public:
-        VlcPlayer(bool enableLogging = false);        
+        VlcPlayer(bool enableLogging = false, void* windowHandle);        
         bool SetMedia(std::string path);
         ~VlcPlayer();
     private:
