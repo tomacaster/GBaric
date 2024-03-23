@@ -7,7 +7,7 @@
 #endif
 
 
-VlcPlayer::VlcPlayer(bool enableLogging = false, void* windowHandle)  : logging(enableLogging)
+VlcPlayer::VlcPlayer(bool enableLogging)  : logging(enableLogging)
 {   
     _instance = std::make_unique<VLC::Instance>(VLC::Instance(0, nullptr));
     if(enableLogging) _instance->logSet([this](int s, const libvlc_log_t *l, std::string m){ this->logCb(s, l, m); });
@@ -25,9 +25,9 @@ bool VlcPlayer::SetSurface(std::shared_ptr<RenderSurface> renderSurface)
     _renderSurface = renderSurface;
 
 #ifdef __linux__
-    auto handle = (void*)GDK_WINDOW_XID(renderSurface->GetHandle());
+    auto handle = (void*)GTK_WINDOW_HANDLE(renderSurface->GetHandle());
     auto win = static_cast<uint32_t>(reinterpret_cast<std::intptr_t>(handle));
-    libvlc_media_player_set_xwindow(playerStruct->player, win);
+    libvlc_media_player_set_xwindow(*_mediaPlayer, win);
 #else
     auto handle = (GTK_WINDOW_HANDLE(_renderSurface->GetHandle()));
         libvlc_media_player_set_hwnd(*_mediaPlayer, handle);
