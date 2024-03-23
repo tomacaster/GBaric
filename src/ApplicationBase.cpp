@@ -40,24 +40,24 @@ auto refBuilder = Gtk::Builder::create();
     }
     catch(const Glib::MarkupError& ex)
     {
-        cerr << "MarkupError: " << ex.what() << endl;
+        std::cerr << "MarkupError: " << ex.what() << endl;
         return false;
     }
     catch(const Gtk::BuilderError& ex)
     {
-        cerr << "BuilderError: " << ex.what() << endl;
+        std::cerr << "BuilderError: " << ex.what() << endl;
         return false;
     }
 
     refBuilder->get_widget_derived("MainWindow", windowMain);
     if(windowMain)
     {
-        windowMain->signal_delete_event().connect(sigc::mem_fun(*this, &AVRenderer::OnDestroy));    
-        windowMain->playButton->signal_clicked().connect( sigc::mem_fun(*this,&AVRenderer::OnPlayButtonPressed) ); 
-        windowMain->pauseButton->signal_clicked().connect( sigc::mem_fun(*this,&AVRenderer::OnPauseButtonPressed) ); 
-        windowMain->sliderData->sliderData->signal_button_press_event().connect(sigc::mem_fun(*this,&AVRenderer::OnSliderButtonPressed));
-        windowMain->sliderData->sliderData->signal_button_release_event().connect(sigc::mem_fun(*this,&AVRenderer::OnSliderReleased));
-        windowMain->renderSurface->signal_realize().connect(sigc::mem_fun(*this, &AVRenderer::OnCreateMain));
+        windowMain->signal_delete_event().connect(sigc::mem_fun(*this, &ApplicationBase::OnDestroy));    
+        windowMain->playButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPlayButtonPressed) ); 
+        windowMain->pauseButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPauseButtonPressed) ); 
+        windowMain->sliderData->sliderData->signal_button_press_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderButtonPressed));
+        windowMain->sliderData->sliderData->signal_button_release_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderReleased));
+        windowMain->renderSurface->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::OnCreateMain));
     }
 }
 
