@@ -1,5 +1,11 @@
 #include <iostream>
 #include "VlcPlayer.h"
+#ifdef __linux__
+#include <gdk/x11/gdkx.h>
+#else
+#include <gdk/win32/gdkwin32.h>
+#endif
+
 
 VlcPlayer::VlcPlayer(bool enableLogging) : logging(enableLogging)
 {   
@@ -8,11 +14,34 @@ VlcPlayer::VlcPlayer(bool enableLogging) : logging(enableLogging)
     _mediaPlayer = std::make_unique<VLC::MediaPlayer>(VLC::MediaPlayer(*_instance.get()));
 }
 
+bool VlcPlayer::SetSurface(std::shared_ptr<RenderSurface> renderSurface)
+{
+    if(_instance)
+    {
+        std::cerr << "You should create second player first" << std::endl; 
+        
+        return false;
+    }
+    _renderSurface = renderSurface;
+
+#ifdef __linux__
+    auto handle = (void*)GDK_WINDOW_XID(renderSurface->GetHandle());
+    auto win = static_cast<uint32_t>(reinterpret_cast<std::intptr_t>(handle));
+    libvlc_media_player_set_xwindow(playerStruct->player, win);
+#else
+    auto handle = (GTK_WINDOW_HANDLE(_renderSurface->GetHandle()));
+        libvlc_media_player_set_hwnd(*_mediaPlayer, handle);
+#endif
+    std::cout << "Window created" << std::endl;
+    return true;
+}
+
 bool VlcPlayer::SetMedia(std::string path)
 {
-    _media = std::make_shared<VLC::Media>(VLC::Media(path, VLC::Media::FromType::FromPath));
+    _media = std::make_shared<VLC::Media>(VLC::Media( path, VLC::Media::FromType::FromPath));
     _mediaPlayer->setMedia(*_media);
     _mediaPlayer->play();
+
     return true;
 }
 
