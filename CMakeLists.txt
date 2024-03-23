@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28.3)
+cmake_minimum_required(VERSION 3.22.1)
 
 PROJECT(GBaric  VERSION 0.0.1)
 
@@ -17,7 +17,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(PkgConfig REQUIRED)
-find_package(CURL REQUIRED)
+
 find_package(Threads REQUIRED)
 pkg_check_modules(GTK REQUIRED gtk4)
 pkg_check_modules(GTKMM REQUIRED gtkmm-4.0)
@@ -54,7 +54,7 @@ if(WIN32)
     #     src/Win32WindowManager.cpp
     # )
     
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBVLC_LIBRARIES}  ${GTK4_LIBRARIES}  ${GTKMM_LIBRARIES} ${CURL_LIBRARIES}  Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBVLC_LIBRARIES}  ${GTK4_LIBRARIES}  ${GTKMM_LIBRARIES} Threads::Threads)
     target_compile_options(${PROJECT_NAME} PRIVATE ${GTK_CFLAGS_OTHER} -Wall -O2 -g ) # -fsanitize=address -fno-omit-frame-pointer -g
 
 elseif(UNIX)
@@ -69,7 +69,7 @@ elseif(UNIX)
     pkg_check_modules(XCB REQUIRED xcb)
 
     include_directories(${LIBVLC_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${XCB_LDFLAGS} ${LIBS_FILES} X11 ${LIBVLC_LIBRARIES}  ${GTK_LIBRARIES} ${CURL_LIBRARIES} ${GTKMM_LIBRARIES} Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${XCB_LDFLAGS} ${LIBS_FILES} X11 ${LIBVLC_LIBRARIES}  ${GTK_LIBRARIES} ${GTKMM_LIBRARIES} Threads::Threads)
     target_compile_options(${PROJECT_NAME} PRIVATE ${XCB_CFLAGS} ${GTK_CFLAGS_OTHER} -Wall -O2 )
 else()
     message(FATAL_ERROR "Unsupported platform")
@@ -81,7 +81,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_TYPE="${PLATFORM_TYP
 
 add_definitions(${GTK_CFLAGS_OTHER} ${GTKMM_CFLAGS_OTHER})
 find_library(VLCPP_LIB NAMES vlcpp PATHS )
-target_include_directories(${PROJECT_NAME} PRIVATE include ${DESTINATION_DIR} ${CURL_INCLUDE_DIRS} ${GTK_INCLUDE_DIRS} ${GTKMM_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PRIVATE include ${DESTINATION_DIR}  ${GTK_INCLUDE_DIRS} ${GTKMM_INCLUDE_DIRS})
 set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN/lib")
 
 # Adding readme

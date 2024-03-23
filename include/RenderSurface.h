@@ -1,6 +1,6 @@
 #pragma once
 
-class RenderSurface
+class RenderSurface : public Gtk::DrawingArea
 {
 public:
 
