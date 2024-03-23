@@ -15,6 +15,7 @@ configure_file(${CMAKE_SOURCE_DIR}/README.md.in ${CMAKE_BINARY_DIR}/README.md @O
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(BINARY_DIR "${CMAKE_BINARY_DIR}/bin/")
 
 find_package(PkgConfig REQUIRED)
 
@@ -34,9 +35,9 @@ FetchContent_MakeAvailable(nlohmann_json)
 
 add_subdirectory(src)
 add_subdirectory(include)
-
+ 
 add_executable(${PROJECT_NAME} ${SRC_FILES})
-
+file(COPY ${CMAKE_SOURCE_DIR}/resources DESTINATION ${CMAKE_BINARY_DIR}/bin)
 
 if(WIN32)
     set(PLATFORM_TYPE "WIN32")
@@ -74,8 +75,6 @@ elseif(UNIX)
 else()
     message(FATAL_ERROR "Unsupported platform")
 endif()
-
-
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_TYPE="${PLATFORM_TYPE}"  ) 
 
