@@ -8,8 +8,8 @@ class VlcPlayer
     protected:
         
     public:
-        VlcPlayer(bool enableLogging = false);        
-       // bool SetSurface(std::shared_ptr<RenderSurface> renderSurface);
+        VlcPlayer(bool enableLogging);        
+        bool SetSurface(std::shared_ptr<RenderSurface> renderSurface);
         bool SetMedia(std::string path);
         ~VlcPlayer();
     private:

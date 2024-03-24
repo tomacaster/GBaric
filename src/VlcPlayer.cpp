@@ -7,7 +7,7 @@
 #endif
 
 
-VlcPlayer::VlcPlayer(bool enableLogging) : logging(enableLogging)
+VlcPlayer::VlcPlayer(bool enableLogging)  : logging(enableLogging)
 {   
     _instance = std::make_unique<VLC::Instance>(VLC::Instance(0, nullptr));
     if(enableLogging) _instance->logSet([this](int s, const libvlc_log_t *l, std::string m){ this->logCb(s, l, m); });
@@ -16,18 +16,21 @@ VlcPlayer::VlcPlayer(bool enableLogging) : logging(enableLogging)
 
 bool VlcPlayer::SetSurface(std::shared_ptr<RenderSurface> renderSurface)
 {
-    if(_instance)
+    if(_instance == nullptr)
     {
-        std::cerr << "You should create second player first" << std::endl; 
+        std::cerr << "You should create player first" << std::endl; 
         
         return false;
     }
     _renderSurface = renderSurface;
 
 #ifdef __linux__
-    auto handle = (void*)GDK_WINDOW_XID(renderSurface->GetHandle());
-    auto win = static_cast<uint32_t>(reinterpret_cast<std::intptr_t>(handle));
-    libvlc_media_player_set_xwindow(playerStruct->player, win);
+
+auto handle = GDK_SURFACE_XID(renderSurface->GetHandle());
+//auto win = static_cast<uint32_t>(reinterpret_cast<std::intptr_t>(handle));
+//libvlc_media_player_set_xwindow(playerStruct->player, win);
+    _mediaPlayer->setXwindow(handle);
+    
 #else
     auto handle = (GTK_WINDOW_HANDLE(_renderSurface->GetHandle()));
         libvlc_media_player_set_hwnd(*_mediaPlayer, handle);
