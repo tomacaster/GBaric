@@ -24,6 +24,10 @@ pkg_check_modules(GTK REQUIRED gtk4)
 pkg_check_modules(GTKMM REQUIRED gtkmm-4.0)
 pkg_check_modules(LIBVLC REQUIRED libvlc)
 
+if(NOT TARGET spdlog)
+    # Stand-alone build
+    find_package(spdlog REQUIRED)
+endif()
 
 include(FetchContent)
 FetchContent_Declare(
@@ -55,7 +59,7 @@ if(WIN32)
     #     src/Win32WindowManager.cpp
     # )
     
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBVLC_LIBRARIES}  ${GTK4_LIBRARIES}  ${GTKMM_LIBRARIES} Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBVLC_LIBRARIES}  ${GTK4_LIBRARIES}  ${GTKMM_LIBRARIES}  spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> Threads::Threads)
     target_compile_options(${PROJECT_NAME} PRIVATE ${GTK_CFLAGS_OTHER} -Wall -O2 -g ) # -fsanitize=address -fno-omit-frame-pointer -g
 
 elseif(UNIX)
@@ -70,7 +74,7 @@ elseif(UNIX)
     pkg_check_modules(XCB REQUIRED xcb)
 
     include_directories(${LIBVLC_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${XCB_LDFLAGS} ${LIBS_FILES} X11 ${LIBVLC_LIBRARIES}  ${GTK_LIBRARIES} ${GTKMM_LIBRARIES} Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${XCB_LDFLAGS} ${LIBS_FILES} X11 ${LIBVLC_LIBRARIES}  ${GTK_LIBRARIES} ${GTKMM_LIBRARIES}  spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> Threads::Threads)
     target_compile_options(${PROJECT_NAME} PRIVATE ${XCB_CFLAGS} ${GTK_CFLAGS_OTHER} -Wall -O2 )
 else()
     message(FATAL_ERROR "Unsupported platform")

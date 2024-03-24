@@ -1,0 +1,13 @@
+id: iotoys.gbaric.player
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: GBaric
+modules:
+  - name: gbaric
+    buildsystem: simple
+    build-commands:
+      - install -D GBaric /app/bin/GBaric
+    sources:
+      - type: file
+        path: GBaric

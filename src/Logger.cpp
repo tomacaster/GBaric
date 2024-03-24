@@ -2,7 +2,7 @@
 
 Logger::Logger()
 {
-
+   
 }
 
 Logger::~Logger()
