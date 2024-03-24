@@ -12,6 +12,7 @@ class MainWindow : public Gtk::ApplicationWindow
     public:
         MainWindow() {};
         MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
+        Glib::RefPtr<RenderSurface> getSurface() { return surface; }
         virtual ~MainWindow();
     private:
         Glib::RefPtr<Gtk::Builder> m_builder;

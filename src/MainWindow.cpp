@@ -11,6 +11,7 @@ MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     pauseButton(m_builder->get_widget<Gtk::Button>("PauseButton")),
     scale(m_builder->get_widget<Gtk::Scale>("ProgressBar"))
 {
+    set_title("ldasdsa");
     if(box) {} else std::cerr << "Cannot box" << std::endl;
     if(surface) {} else std::cerr << "Cannot surface" << std::endl;
     if(grid) {} else std::cerr << "Cannot grid" << std::endl;

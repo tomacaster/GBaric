@@ -10,7 +10,11 @@
 #endif
 #include <gtk/gtk.h>
 
-ApplicationBase::ApplicationBase(std::string appName) : Gtk::Application(appName), refBuilder(Gtk::Builder::create()), mainWindow(nullptr)
+ApplicationBase::ApplicationBase(std::string appName) : 
+    Gtk::Application(appName), 
+    refBuilder(Gtk::Builder::create()), 
+    mainWindow(nullptr),
+    player(std::make_shared<VlcPlayer>(false))
 {
     try
     {
@@ -58,12 +62,10 @@ Glib::RefPtr<ApplicationBase> ApplicationBase::create(std::string appName)
 
 void ApplicationBase::on_startup()
 {
-
-
-    auto win =  Gtk::Builder::get_widget_derived<MainWindow>(refBuilder, Glib::ustring("MainWindow"));
-    if(win)
+    mainWindow =  Glib::RefPtr<MainWindow>(Gtk::Builder::get_widget_derived<MainWindow>(refBuilder, Glib::ustring("MainWindow")));
+    if(mainWindow)
     {
-        win->show();
+        mainWindow->show();
         // mainWindow->signal_delete_event().connect(sigc::mem_fun(*this, &ApplicationBase::OnDestroy));    
         // mainWindow->playButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPlayButtonPressed) ); 
         // mainWindow->pauseButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPauseButtonPressed) ); 
@@ -77,6 +79,8 @@ void ApplicationBase::on_startup()
 
 void ApplicationBase::on_activate()
 {
+	player->SetSurface(getSurface());
+	player->SetMedia("/home/michal/Documents/video.mp4");
 }
 
 ApplicationBase::~ApplicationBase()
