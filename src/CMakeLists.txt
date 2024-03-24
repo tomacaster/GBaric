@@ -1,6 +1,7 @@
 set(SRC_FILES
 src/ApplicationBase.cpp
 src/GBaric.cpp
+src/Logger.cpp
 src/MainWindow.cpp
 src/RenderSurface.cpp
 src/VlcPlayer.cpp
