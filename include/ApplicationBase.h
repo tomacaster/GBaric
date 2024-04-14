@@ -22,7 +22,7 @@ class ApplicationBase : public Gtk::Application
         
         void on_startup() override;
         void on_activate() override;
-
+        void on_shutdown() override;
         ~ApplicationBase();
 
 

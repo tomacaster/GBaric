@@ -38,5 +38,5 @@ std::shared_ptr<spdlog::logger> Logger::GetClassLogger(std::string name)
 
 Logger::~Logger()
 {
-
+    
 }

@@ -9,7 +9,7 @@
 
 MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder) :  Gtk::ApplicationWindow(cobject), _builder(builder)
 {
-    set_title("ldasdsa");
+    set_title("GBaric");
     
     box = std::shared_ptr<Gtk::Box>(_builder->get_widget<Gtk::Box>("Box"));
     if(box) {} else std::cerr << "Cannot box" << std::endl;
@@ -30,7 +30,6 @@ MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     scale = std::shared_ptr<Gtk::Scale>(_builder->get_widget<Gtk::Scale>("ProgressBar"));
     if(scale) {} else std::cerr << "Cannot scale" << std::endl;
 }
-
 
 MainWindow::~MainWindow()
 {

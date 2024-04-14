@@ -8,7 +8,7 @@ std::shared_ptr<spdlog::logger> ApplicationBase::_logger {nullptr};
 
 ApplicationBase::ApplicationBase(std::string appName) : 
     Gtk::Application(appName), 
-    player(std::make_shared<VlcPlayer>(false))
+    player(std::make_shared<VlcPlayer>(true))
 {}
 
 void ApplicationBase::onSurfaceRealize()
@@ -98,6 +98,10 @@ void ApplicationBase::on_activate()
 
     add_window(*window);
     window->show();
+}
+
+void ApplicationBase::on_shutdown()
+{
 }
 
 ApplicationBase::~ApplicationBase()

@@ -42,6 +42,7 @@ bool VlcPlayer::SetMedia(std::string path)
 {
     _media = std::make_shared<VLC::Media>(VLC::Media(*_instance, path, VLC::Media::FromPath));
     _mediaPlayer->setMedia(*_media);
+    
     _mediaPlayer->play();
 
     return true;
