@@ -3,23 +3,68 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#ifdef __linux__
-#include <gdk/x11/gdkx.h>
-#else
-#include <gdk/win32/gdkwin32.h>
-#endif
-#include <gtk/gtk.h>
+
 
 ApplicationBase::ApplicationBase(std::string appName) : 
     Gtk::Application(appName), 
-    refBuilder(Gtk::Builder::create()), 
-    mainWindow(nullptr),
     player(std::make_shared<VlcPlayer>(false))
+{}
+
+void ApplicationBase::onSurfaceRealize()
+{
+    player->SetSurface(window->getSurface());
+    player->SetMedia("/home/michal/Documents/video.mp4");
+}
+
+void ApplicationBase::onWindowRealize()
+{
+
+}
+
+Glib::RefPtr<ApplicationBase> ApplicationBase::create(std::string appName)
 {
     try
     {
+        auto res = Gio::Resource::create_from_file("resources/resources.gresource");
+        res->register_global();
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+
+      //  _logger->error(e.what());
+    }
+    
+
+    return Glib::RefPtr<ApplicationBase>(new ApplicationBase(appName));
+}
+
+void ApplicationBase::on_startup()
+{
+        // mainWindow =  Glib::RefPtr<MainWindow>(Gtk::Builder::get_widget_derived<MainWindow>(refBuilder, Glib::ustring("MainWindow")));
+    // if(mainWindow)
+    // {
+        
+    //    // mainWindow->show();
+    //     // mainWindow->signal_delete_event().connect(sigc::mem_fun(*this, &ApplicationBase::OnDestroy));    
+    //     // mainWindow->playButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPlayButtonPressed) ); 
+    //     // mainWindow->pauseButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPauseButtonPressed) ); 
+    //     // mainWindow->sliderData->sliderData->signal_button_press_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderButtonPressed));
+    //     // mainWindow->sliderData->sliderData->signal_button_release_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderReleased));
+    //     // mainWindow->renderSurface->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::OnCreateMain));
+    // }
+    Gtk::Application::on_startup();
+}
+
+void ApplicationBase::on_activate()
+{
+    try
+    {
+        _builder = Gtk::Builder::create();
+      //  _logger = Logger::GetLogger();
 #ifdef __linux__
-        auto res = refBuilder->add_from_file("resources/gui.glade");
+
+        auto res = _builder->add_from_resource("/resources/gui.glade"); //("resources/gui.glade");
         if(!res)
         {
             std::cout << "Cannot load resources" << std::endl;
@@ -27,7 +72,7 @@ ApplicationBase::ApplicationBase(std::string appName) :
            // return false;
         }  
 #else
-        auto res = refBuilder->add_from_file("resources\\gui.glade");
+        auto res = _builder->add_from_file("resources\\gui.glade");
         if(!res)
         {
             std::cout << "Cannot load resources" << std::endl;
@@ -51,36 +96,18 @@ ApplicationBase::ApplicationBase(std::string appName) :
         std::cerr << "BuilderError: " << ex.what() << std::endl;
         // return Glib::RefPtr<ApplicationBase>();
     }
-
-   
-}
-
-Glib::RefPtr<ApplicationBase> ApplicationBase::create(std::string appName)
-{
-    return Glib::RefPtr<ApplicationBase>(new ApplicationBase(appName));
-}
-
-void ApplicationBase::on_startup()
-{
-    mainWindow =  Glib::RefPtr<MainWindow>(Gtk::Builder::get_widget_derived<MainWindow>(refBuilder, Glib::ustring("MainWindow")));
-    if(mainWindow)
+    catch(const std::exception& ex)
     {
-        mainWindow->show();
-        // mainWindow->signal_delete_event().connect(sigc::mem_fun(*this, &ApplicationBase::OnDestroy));    
-        // mainWindow->playButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPlayButtonPressed) ); 
-        // mainWindow->pauseButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPauseButtonPressed) ); 
-        // mainWindow->sliderData->sliderData->signal_button_press_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderButtonPressed));
-        // mainWindow->sliderData->sliderData->signal_button_release_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderReleased));
-        // mainWindow->renderSurface->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::OnCreateMain));
+        std::cerr << ex.what() << std::endl;
     }
 
-    Gtk::Application::on_startup();
-}
+    window = Gtk::Builder::get_widget_derived<MainWindow>(_builder, Glib::ustring("MainWindow"));
+    window->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::onWindowRealize));
+    window->getSurface()->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::onSurfaceRealize));
+    window->set_size_request(800, 600);
+    add_window(*window);
+    window->show();
 
-void ApplicationBase::on_activate()
-{
-	player->SetSurface(getSurface());
-	player->SetMedia("/home/michal/Documents/video.mp4");
 }
 
 ApplicationBase::~ApplicationBase()

@@ -27,12 +27,11 @@ bool VlcPlayer::SetSurface(std::shared_ptr<RenderSurface> renderSurface)
 #ifdef __linux__
 
 auto handle = GDK_SURFACE_XID(renderSurface->GetHandle());
-//auto win = static_cast<uint32_t>(reinterpret_cast<std::intptr_t>(handle));
-//libvlc_media_player_set_xwindow(playerStruct->player, win);
+
     _mediaPlayer->setXwindow(handle);
     
 #else
-    auto handle = (GTK_WINDOW_HANDLE(_renderSurface->GetHandle()));
+        auto handle = (GTK_WINDOW_HANDLE(_renderSurface->GetHandle()));
         libvlc_media_player_set_hwnd(*_mediaPlayer, handle);
 #endif
     std::cout << "Window created" << std::endl;
@@ -41,7 +40,7 @@ auto handle = GDK_SURFACE_XID(renderSurface->GetHandle());
 
 bool VlcPlayer::SetMedia(std::string path)
 {
-    _media = std::make_shared<VLC::Media>(VLC::Media( path, VLC::Media::FromType::FromPath));
+    _media = std::make_shared<VLC::Media>(VLC::Media(*_instance, path, VLC::Media::FromPath));
     _mediaPlayer->setMedia(*_media);
     _mediaPlayer->play();
 
