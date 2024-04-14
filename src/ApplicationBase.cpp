@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread>
 
+std::shared_ptr<spdlog::logger> ApplicationBase::_logger {nullptr};
 
 ApplicationBase::ApplicationBase(std::string appName) : 
     Gtk::Application(appName), 
@@ -25,14 +26,15 @@ Glib::RefPtr<ApplicationBase> ApplicationBase::create(std::string appName)
 {
     try
     {
+        _logger = Logger::GetClassLogger("AppBase");
         auto res = Gio::Resource::create_from_file("resources/resources.gresource");
         res->register_global();
     }
     catch(const std::exception& e)
     {
         std::cerr << e.what() << std::endl;
-
-      //  _logger->error(e.what());
+        return Glib::RefPtr<ApplicationBase>();
+        _logger->error(e.what());
     }
     
 
@@ -41,18 +43,6 @@ Glib::RefPtr<ApplicationBase> ApplicationBase::create(std::string appName)
 
 void ApplicationBase::on_startup()
 {
-        // mainWindow =  Glib::RefPtr<MainWindow>(Gtk::Builder::get_widget_derived<MainWindow>(refBuilder, Glib::ustring("MainWindow")));
-    // if(mainWindow)
-    // {
-        
-    //    // mainWindow->show();
-    //     // mainWindow->signal_delete_event().connect(sigc::mem_fun(*this, &ApplicationBase::OnDestroy));    
-    //     // mainWindow->playButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPlayButtonPressed) ); 
-    //     // mainWindow->pauseButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPauseButtonPressed) ); 
-    //     // mainWindow->sliderData->sliderData->signal_button_press_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderButtonPressed));
-    //     // mainWindow->sliderData->sliderData->signal_button_release_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderReleased));
-    //     // mainWindow->renderSurface->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::OnCreateMain));
-    // }
     Gtk::Application::on_startup();
 }
 
@@ -105,9 +95,9 @@ void ApplicationBase::on_activate()
     window->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::onWindowRealize));
     window->getSurface()->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::onSurfaceRealize));
     window->set_size_request(800, 600);
+
     add_window(*window);
     window->show();
-
 }
 
 ApplicationBase::~ApplicationBase()

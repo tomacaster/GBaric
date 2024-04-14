@@ -7,29 +7,14 @@
 class Logger
 {
     public:
-        static void InitLogger() 
-        {
-            auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-            console_sink->set_level(spdlog::level::info);
-            console_sink->set_pattern("[%^%l%$] %v");
+        static void InitLogger();
 
-            auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/logs.log", true);
-            file_sink->set_level(spdlog::level::trace);
-            file_sink->set_pattern("[%d-%m-%Y %H:%M:%S] [%l] %v");
-
-            spdlog::logger logger("multi_sink", {console_sink, file_sink});
-            logger.set_level(spdlog::level::trace); 
-            spdlog::register_logger(std::make_shared<spdlog::logger>(logger));
-
-            spdlog::set_default_logger(spdlog::get("multi_sink")); 
-            spdlog::set_pattern("[%d-%m-%Y %H:%M:%S] [%^%L%$] %v"); 
-        }
-
-        static std::shared_ptr<spdlog::logger> GetLogger() 
-        {
-            return spdlog::get("multi_sink");
-        }
+        static std::shared_ptr<spdlog::logger> GetClassLogger(std::string name);
         Logger();
         ~Logger();
+    private:
+        static const std::string MAIN_LOGGER_PATTERN;
+        static std::shared_ptr<spdlog::sinks::stdout_color_sink_mt> _consoleSink;
+        static std::shared_ptr<spdlog::sinks::basic_file_sink_mt> _fileSink;
 
 };

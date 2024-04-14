@@ -10,7 +10,7 @@ class ApplicationBase : public Gtk::Application
 {
     protected:
         ApplicationBase(std::string appName);
-       // static std::shared_ptr<spdlog::logger> _logger;
+        static std::shared_ptr<spdlog::logger> _logger;
     private:
         std::shared_ptr<VlcPlayer> player;
         Glib::RefPtr<Gtk::Builder> _builder;

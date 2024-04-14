@@ -9,10 +9,10 @@
 int main()
 {
     Logger::InitLogger();
-    auto logger = Logger::GetLogger();
+    auto logger = Logger::GetClassLogger("Main method");
 	auto app = ApplicationBase::create("iotoys.gbaric.player");
 
-    logger->info("fdsfds");
+    logger->info("Starting GBaric");
 	logger->flush();
 
 	return app->run(0, nullptr);
