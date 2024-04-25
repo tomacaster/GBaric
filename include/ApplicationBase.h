@@ -15,7 +15,7 @@ class ApplicationBase : public Gtk::Application
         std::shared_ptr<VlcPlayer> player;
         Glib::RefPtr<Gtk::Builder> _builder;
         MainWindow *window;
-        void onSurfaceRealize();
+        void OnSurfaceRealize();
         void onWindowRealize();
     public:
         static Glib::RefPtr<ApplicationBase> create(std::string appName);

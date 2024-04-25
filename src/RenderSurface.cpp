@@ -7,6 +7,11 @@ RenderSurface::RenderSurface(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Bu
     set_draw_func(sigc::mem_fun(*this, &RenderSurface::OnDraw));
 }
 
+GdkSurface *RenderSurface::GetHandle()
+{ 
+    return this->get_native()->get_surface()->gobj();
+}
+
 RenderSurface::~RenderSurface()
 {
 

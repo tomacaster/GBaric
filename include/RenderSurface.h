@@ -10,7 +10,7 @@ class RenderSurface : public Gtk::DrawingArea
 {
     public:
         RenderSurface(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-        GdkSurface* GetHandle() { return this->get_native()->get_surface()->gobj(); };
+        GdkSurface* GetHandle();
         ~RenderSurface();
     protected:
         Glib::RefPtr<Gtk::Builder> m_builder;

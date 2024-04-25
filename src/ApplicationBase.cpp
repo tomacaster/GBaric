@@ -8,10 +8,10 @@ std::shared_ptr<spdlog::logger> ApplicationBase::_logger {nullptr};
 
 ApplicationBase::ApplicationBase(std::string appName) : 
     Gtk::Application(appName), 
-    player(std::make_shared<VlcPlayer>(true))
+    player(std::make_shared<VlcPlayer>(false))
 {}
 
-void ApplicationBase::onSurfaceRealize()
+void ApplicationBase::OnSurfaceRealize()
 {
     player->SetSurface(window->getSurface());
     player->SetMedia("/home/michal/Documents/video.mp4");
@@ -93,7 +93,7 @@ void ApplicationBase::on_activate()
 
     window = Gtk::Builder::get_widget_derived<MainWindow>(_builder, Glib::ustring("MainWindow"));
     window->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::onWindowRealize));
-    window->getSurface()->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::onSurfaceRealize));
+    window->getSurface()->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::OnSurfaceRealize));
     window->set_size_request(800, 600);
 
     add_window(*window);
