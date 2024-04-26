@@ -1,6 +1,6 @@
 #include "Logger.h"
 
-const std::string Logger::MAIN_LOGGER_PATTERN {"[%d-%m-%Y %H:%M:%S] %n [%^%L%$] %v"};
+const std::string Logger::MAIN_LOGGER_PATTERN {"[%d-%m-%Y %H:%M:%S.%e] %n [%^%L%$] %v"};
 std::shared_ptr<spdlog::sinks::stdout_color_sink_mt> Logger::_consoleSink {nullptr};
 std::shared_ptr<spdlog::sinks::basic_file_sink_mt> Logger::_fileSink {nullptr};
 
