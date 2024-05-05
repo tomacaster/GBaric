@@ -7,10 +7,10 @@
 #include <SQLiteCpp/Database.h>
 #include "Logger.h"
 
-class DBEngine 
+class DBEngineBase 
 {
-    public:
-        DBEngine(const std::string& dbPath);
+    private:
+        DBEngineBase(const std::string& dbPath);
         // Creating a database
         bool CreateDatabase(const std::string& dbName);
 
@@ -50,7 +50,7 @@ class DBEngine
         // Error handling
         bool HandleError(const std::string& errorMessage);
 
-    private:
+    protected:
         SQLite::Database _db;
         static std::shared_ptr<spdlog::logger> _logger;
 };

@@ -5,7 +5,7 @@ src/Logger.cpp
 src/MainWindow.cpp
 src/RenderSurface.cpp
 src/VlcPlayer.cpp
-src/DBEngine.cpp
+src/DBEngineBase.cpp
 src/Storage.cpp
 PARENT_SCOPE
 )
