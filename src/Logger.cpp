@@ -9,13 +9,13 @@ Logger::Logger()
    
 }
 
-void Logger::InitLogger()
+void Logger::InitLogger(std::string &logsDir)
 {
     _consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
     _consoleSink->set_level(spdlog::level::info);
     _consoleSink->set_pattern("[%^%l%$] %v");
 
-    _fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/logs.log", true);
+    _fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(logsDir + "/" + "logs/logs.log", true);
     _fileSink->set_level(spdlog::level::trace);
     _fileSink->set_pattern("[%d-%m-%Y %H:%M:%S] [%l] %v");
 

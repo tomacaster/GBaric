@@ -1,19 +1,19 @@
-#include <iostream>
+#include <string>
 #include <chrono>
 #include <thread>
 #include "Logger.h"
 #include "ApplicationBase.h"
 #include "MainWindow.h"
+#include "DBEngine.h"
+#include "Storage.h"
 
+std::string appName { "iotoys.gbaric.player" };
 
 int main()
 {
-    Logger::InitLogger();
-    auto logger = Logger::GetClassLogger("Main method");
-	auto app = ApplicationBase::create("iotoys.gbaric.player");
+    auto homedir = StorageBase::InitStorage(appName);
 
-    logger->info("Starting GBaric");
-	logger->flush();
+	auto app = ApplicationBase::create(appName);
 
 	return app->run(0, nullptr);
 }

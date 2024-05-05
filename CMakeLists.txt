@@ -13,13 +13,13 @@ configure_file(
 
 configure_file(${CMAKE_SOURCE_DIR}/README.md.in ${CMAKE_BINARY_DIR}/README.md @ONLY)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(BINARY_DIR "${CMAKE_BINARY_DIR}/bin/")
 
 find_package(PkgConfig REQUIRED)
-
 find_package(Threads REQUIRED)
+pkg_check_modules(SQLiteCpp REQUIRED sqlite3)
 pkg_check_modules(GTK REQUIRED gtk4)
 pkg_check_modules(GTKMM REQUIRED gtkmm-4.0)
 pkg_check_modules(LIBVLC REQUIRED libvlc)
@@ -59,7 +59,7 @@ if(WIN32)
     #     src/Win32WindowManager.cpp
     # )
     
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBVLC_LIBRARIES}  ${GTK4_LIBRARIES}  ${GTKMM_LIBRARIES}  spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBVLC_LIBRARIES}  ${GTK4_LIBRARIES}  ${GTKMM_LIBRARIES}  ${SQLiteCpp_LIBRARIES} spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> Threads::Threads)
     target_compile_options(${PROJECT_NAME} PRIVATE ${GTK_CFLAGS_OTHER} -Wall -O2 -g ) # -fsanitize=address -fno-omit-frame-pointer -g
 
 elseif(UNIX)
@@ -74,7 +74,7 @@ elseif(UNIX)
     pkg_check_modules(XCB REQUIRED xcb)
 
     include_directories(${LIBVLC_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${XCB_LDFLAGS} ${LIBS_FILES} X11 ${LIBVLC_LIBRARIES}  ${GTK_LIBRARIES} ${GTKMM_LIBRARIES}  spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${XCB_LDFLAGS} ${LIBS_FILES} X11 ${LIBVLC_LIBRARIES}  ${GTK_LIBRARIES} ${GTKMM_LIBRARIES}  ${SQLiteCpp_LIBRARIES} SQLiteCpp sqlite3 spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> Threads::Threads)
     target_compile_options(${PROJECT_NAME} PRIVATE ${XCB_CFLAGS} ${GTK_CFLAGS_OTHER} -Wall -O2 )
 else()
     message(FATAL_ERROR "Unsupported platform")
@@ -82,9 +82,11 @@ endif()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_TYPE="${PLATFORM_TYPE}"  ) 
 
+link_directories(${SQLiteCpp_LIBRARY_DIRS})
+
 add_definitions(${GTK_CFLAGS_OTHER} ${GTKMM_CFLAGS_OTHER})
 find_library(VLCPP_LIB NAMES vlcpp PATHS )
-target_include_directories(${PROJECT_NAME} PRIVATE include ${DESTINATION_DIR}  ${GTK_INCLUDE_DIRS} ${GTKMM_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PRIVATE include ${DESTINATION_DIR}  ${GTK_INCLUDE_DIRS} ${GTKMM_INCLUDE_DIRS} ${SQLiteCpp_INCLUDE_DIRS})
 set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN/lib")
 
 # Adding readme

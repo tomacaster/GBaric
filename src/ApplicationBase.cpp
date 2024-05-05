@@ -8,8 +8,11 @@ std::shared_ptr<spdlog::logger> ApplicationBase::_logger {nullptr};
 
 ApplicationBase::ApplicationBase(std::string appName) : 
     Gtk::Application(appName), 
-    player(std::make_shared<VlcPlayer>(false))
-{}
+    player(std::make_shared<VlcPlayer>(false)),
+    _storage(nullptr)
+{
+
+}
 
 void ApplicationBase::OnSurfaceRealize()
 {
@@ -22,11 +25,12 @@ void ApplicationBase::onWindowRealize()
 
 }
 
-Glib::RefPtr<ApplicationBase> ApplicationBase::create(std::string appName)
+Glib::RefPtr<ApplicationBase> ApplicationBase::create(std::string &appName)
 {
     try
     {
         _logger = Logger::GetClassLogger("AppBase");
+         
         auto res = Gio::Resource::create_from_file("resources/resources.gresource");
         res->register_global();
     }
@@ -37,8 +41,16 @@ Glib::RefPtr<ApplicationBase> ApplicationBase::create(std::string appName)
         _logger->error(e.what());
     }
     
-
-    return Glib::RefPtr<ApplicationBase>(new ApplicationBase(appName));
+    if(id_is_valid(appName))
+    {
+        _logger->critical("App name is not valid {}", appName);
+        return Glib::RefPtr<ApplicationBase>(new ApplicationBase(appName));
+    }
+    else
+    {
+        return nullptr;
+    }
+    
 }
 
 void ApplicationBase::on_startup()
