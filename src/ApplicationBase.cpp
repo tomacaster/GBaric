@@ -14,7 +14,7 @@ ApplicationBase::ApplicationBase(std::string appName) :
 void ApplicationBase::OnSurfaceRealize()
 {
     player->SetSurface(window->getSurface());
-    player->SetMedia("/home/michal/Documents/video.mp4");
+    player->SetMedia("/home/michal/Documents/Projekty/video.mp4");
 }
 
 void ApplicationBase::onWindowRealize()
