@@ -10,7 +10,7 @@
 class DBEngine 
 {
     public:
-        DBEngine(const std::string dbPath);
+        DBEngine(const std::string& dbPath);
         // Creating a database
         bool CreateDatabase(const std::string& dbName);
 
@@ -18,7 +18,7 @@ class DBEngine
         bool CreateTable(const std::string& tableName, const std::string& columns);
 
         // Inserting data
-        bool InsertData(const std::string& tableName, const std::string& data);
+        bool InsertData(const std::string& tableName, const std::string &columns, const std::string& data);
 
         // Selecting data
         bool SelectData(const std::string& tableName, const std::string& condition);

@@ -1,8 +1,9 @@
 #include "DBEngine.h"
+#include <fmt/core.h>
 
 std::shared_ptr<spdlog::logger> DBEngine::_logger {nullptr};
 
-DBEngine::DBEngine(const std::string dbPath) : _db(dbPath, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE)
+DBEngine::DBEngine(const std::string& dbPath) : _db(dbPath, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE)
 {
     _logger = Logger::GetClassLogger("DBEngine");
 }
@@ -16,6 +17,8 @@ bool DBEngine::CreateTable(const std::string& tableName, const std::string& colu
 {
     try 
     {
+        //"CREATE TABLE IF NOT EXISTS Playlista (""ID INTEGER PRIMARY KEY AUTOINCREMENT,""Nazwa TEXT NOT NULL,""Plik TEXT NOT NULL)")
+        _db.exec("DROP TABLE IF EXISTS test");
         _db.exec("CREATE TABLE IF NOT EXISTS " + tableName + " (" + columns + ")");
 
         return true;
@@ -27,9 +30,21 @@ bool DBEngine::CreateTable(const std::string& tableName, const std::string& colu
     }
 }
 
-bool DBEngine::InsertData(const std::string &tableName, const std::string &data)
-{
 
+bool DBEngine::InsertData(const std::string &tableName, const std::string &columns, const std::string &data)
+{
+    try
+    {
+        auto str = fmt::format("INSERT INTO {} ({}) VALUES ({})", tableName, columns, data);
+        SQLite::Statement query(_db, str);
+        query.exec();
+        //_db.exec("INSERT INTO " + tableName + std::string(fmt::format("({}) ", data) + "VALUES " ));
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
     return true;
 }
 

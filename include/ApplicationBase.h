@@ -21,6 +21,7 @@ class ApplicationBase : public Gtk::Application
         void onWindowRealize();
     public:
         static Glib::RefPtr<ApplicationBase> create(std::string &appName);
+        
         void on_startup() override;
         void on_activate() override;
         void on_shutdown() override;
