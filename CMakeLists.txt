@@ -24,6 +24,11 @@ pkg_check_modules(SQLiteCpp REQUIRED sqlite3)
 pkg_check_modules(GTK REQUIRED gtk4)
 pkg_check_modules(GTKMM REQUIRED gtkmm-4.0)
 pkg_check_modules(LIBVLC REQUIRED libvlc)
+pkg_search_module(gstreamer REQUIRED IMPORTED_TARGET gstreamer-1.0>=1.4)
+pkg_search_module(gstreamer-sdp REQUIRED IMPORTED_TARGET gstreamer-sdp-1.0>=1.4)
+pkg_search_module(gstreamer-app REQUIRED IMPORTED_TARGET gstreamer-app-1.0>=1.4)
+pkg_search_module(gstreamer-video REQUIRED IMPORTED_TARGET gstreamer-video-1.0>=1.4)
+
 
 if(NOT TARGET spdlog)
     # Stand-alone build
@@ -75,7 +80,10 @@ elseif(UNIX)
     pkg_check_modules(XCB REQUIRED xcb)
 
     include_directories(${LIBVLC_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR} ${FMT_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${XCB_LDFLAGS} ${LIBS_FILES} X11 ${LIBVLC_LIBRARIES}  ${GTK_LIBRARIES} ${GTKMM_LIBRARIES} ${FMT_LIBRARIES} ${SQLiteCpp_LIBRARIES} SQLiteCpp sqlite3 spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${XCB_LDFLAGS} ${LIBS_FILES} X11 ${LIBVLC_LIBRARIES}  ${GTK_LIBRARIES} ${GTKMM_LIBRARIES} ${FMT_LIBRARIES} ${SQLiteCpp_LIBRARIES} SQLiteCpp sqlite3 spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> Threads::Threads     PkgConfig::gstreamer
+    PkgConfig::gstreamer-sdp
+    PkgConfig::gstreamer-app
+    PkgConfig::gstreamer-video)
     target_compile_options(${PROJECT_NAME} PRIVATE ${XCB_CFLAGS} ${GTK_CFLAGS_OTHER} -Wall -O2 )
 else()
     message(FATAL_ERROR "Unsupported platform")

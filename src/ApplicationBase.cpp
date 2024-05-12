@@ -43,11 +43,11 @@ Glib::RefPtr<ApplicationBase> ApplicationBase::create(std::string &appName)
     
     if(id_is_valid(appName))
     {
-        _logger->critical("App name is not valid {}", appName);
         return Glib::RefPtr<ApplicationBase>(new ApplicationBase(appName));
     }
     else
-    {
+    {   
+        _logger->critical("App name is not valid {}", appName);
         return nullptr;
     }
     
@@ -114,6 +114,7 @@ void ApplicationBase::on_activate()
 
 void ApplicationBase::on_shutdown()
 {
+    
 }
 
 ApplicationBase::~ApplicationBase()
