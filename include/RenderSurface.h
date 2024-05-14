@@ -5,8 +5,9 @@
 #include "gtkmm/drawingarea.h"
 #include <gtkmm/window.h>
 #include <gdkmm/cairocontext.h>
+#include <gtkmm/video.h>
 
-class RenderSurface : public Gtk::DrawingArea
+class RenderSurface : public Gtk::Video
 {
     public:
         RenderSurface(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);

@@ -14,4 +14,4 @@ class IVideoPlayer
         virtual bool Rewind() = 0;
         virtual bool SetLoop() = 0;
 
-}
+};

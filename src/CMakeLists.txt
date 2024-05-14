@@ -7,5 +7,7 @@ src/RenderSurface.cpp
 src/VlcPlayer.cpp
 src/DBEngineBase.cpp
 src/Storage.cpp
+src/GMediaPlayer.cpp
+src/DataObject.cpp
 PARENT_SCOPE
 )

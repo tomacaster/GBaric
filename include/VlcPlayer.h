@@ -9,6 +9,7 @@ class VlcPlayer
         
     public:
         VlcPlayer(bool enableLogging);        
+        void SetupSurface(void* surface);
         bool SetSurface(std::shared_ptr<RenderSurface> renderSurface);
         bool SetMedia(std::string path);
         ~VlcPlayer();

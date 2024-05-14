@@ -1,10 +1,11 @@
 #include "RenderSurface.h"
 
 RenderSurface::RenderSurface(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder) : 
-    Gtk::DrawingArea(cobject),
+    Gtk::Video(cobject),
     m_builder(builder)
 {
-    set_draw_func(sigc::mem_fun(*this, &RenderSurface::OnDraw));
+    
+   // set_draw_func(sigc::mem_fun(*this, &RenderSurface::OnDraw));
 }
 
 GdkSurface *RenderSurface::GetHandle()
