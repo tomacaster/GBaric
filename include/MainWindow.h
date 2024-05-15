@@ -26,6 +26,6 @@ class MainWindow : public Gtk::ApplicationWindow
         Glib::RefPtr<Gtk::Button> pauseButton;
         Glib::RefPtr<Gtk::Scale> scale;
     protected: 
-       // static std::shared_ptr<spdlog::logger> _logger;
+        static std::shared_ptr<spdlog::logger> _logger;
 
 };

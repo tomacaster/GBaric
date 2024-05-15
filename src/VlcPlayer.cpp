@@ -6,9 +6,11 @@
 #include <gdk/win32/gdkwin32.h>
 #endif
 
+std::shared_ptr<spdlog::logger> VlcPlayer::_logger {nullptr};
 
 VlcPlayer::VlcPlayer(bool enableLogging)  : logging(enableLogging)
 {   
+    _logger = Logger::GetClassLogger("VlcPlayer");
     _instance = std::make_unique<VLC::Instance>(VLC::Instance(0, nullptr));
     if(enableLogging) _instance->logSet([this](int s, const libvlc_log_t *l, std::string m){ this->logCb(s, l, m); });
     _mediaPlayer = std::make_unique<VLC::MediaPlayer>(VLC::MediaPlayer(*_instance.get()));
@@ -34,7 +36,7 @@ auto handle = GDK_SURFACE_XID(renderSurface->GetHandle());
         auto handle = (GTK_WINDOW_HANDLE(_renderSurface->GetHandle()));
         libvlc_media_player_set_hwnd(*_mediaPlayer, handle);
 #endif
-    std::cout << "Window created" << std::endl;
+    _logger->info("Window created");
     return true;
 }
 
@@ -55,5 +57,6 @@ VlcPlayer::~VlcPlayer()
 
 void VlcPlayer::logCb(int size, const libvlc_log_t *logT, std::string message)
 {
+    _logger->debug(message);
     std::cout << message << std::endl;
 }

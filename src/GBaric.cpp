@@ -1,18 +1,19 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <string>
 #include "Logger.h"
 #include "ApplicationBase.h"
 #include "MainWindow.h"
 #include "Storage.h"
 #include "DataObject.h"
+#include "DBEngineBase.h"
 #include <gstreamer-1.0/gst/gst.h>
 
 std::string appName { "iotoys.gbaric.player" };
 
 int main(int argc, char *argv[])
 {
-
 //   GstElement *pipeline;
 //   GstBus* gstBus;
 //   GstMessage* msg;
@@ -35,10 +36,10 @@ int main(int argc, char *argv[])
 //   gst_object_unref (gstBus);
 //   gst_element_set_state (pipeline, GST_STATE_NULL);
 //   gst_object_unref (pipeline);
-  // auto homedir = StorageBase::InitStorage(appName);
-  //  auto db = DBEngineBase(homedir + "/Data/db.db3");
-   // db.CreateTable("Playlist", "ID INTEGER PRIMARY KEY AUTOINCREMENT,""Nazwa TEXT NOT NULL,""Plik TEXT NOT NULL");
-//	auto app = ApplicationBase::create(appName);
+  auto homedir = StorageBase::InitStorage(appName);
+  // auto db = DBEngineBase(homedir + "/Data/db.db3");
+  // db.CreateTable("Playlist", "ID INTEGER PRIMARY KEY AUTOINCREMENT,""Nazwa TEXT NOT NULL,""Plik TEXT NOT NULL");
+	auto app = ApplicationBase::create(appName);
 
-//	return app->run(0, nullptr);
+	return app->run(0, nullptr);
 }

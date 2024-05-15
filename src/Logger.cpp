@@ -29,11 +29,20 @@ void Logger::InitLogger(std::string &logsDir)
 
 std::shared_ptr<spdlog::logger> Logger::GetClassLogger(std::string name)
 {
-    spdlog::logger log(name, {_consoleSink, _fileSink});
-    log.set_level(spdlog::level::trace); 
-    spdlog::register_logger(std::make_shared<spdlog::logger>(log));
-    
-    return spdlog::get(name);
+    auto logger = spdlog::get(name);
+    if(logger == nullptr)
+    {
+        spdlog::logger log(name, {_consoleSink, _fileSink});
+        log.set_level(spdlog::level::trace); 
+        spdlog::register_logger(std::make_shared<spdlog::logger>(log));
+
+        return spdlog::get(name);
+
+    }
+    else
+    {
+        return logger;
+    }
 }
 
 Logger::~Logger()

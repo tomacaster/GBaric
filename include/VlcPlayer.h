@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Logger.h"
 #include  "vlcpp/vlc.hpp"
 #include "RenderSurface.h"
 
@@ -14,7 +15,7 @@ class VlcPlayer
         bool SetMedia(std::string path);
         ~VlcPlayer();
     private:
-
+        static std::shared_ptr<spdlog::logger> _logger;
         bool logging = false;
         std::unique_ptr<VLC::MediaPlayer> _mediaPlayer;
         std::unique_ptr<VLC::Instance> _instance;
