@@ -1,4 +1,5 @@
 #include "Logger.h"
+#include <iostream>
 
 const std::string Logger::MAIN_LOGGER_PATTERN {"[%d-%m-%Y %H:%M:%S.%e] %n [%^%L%$] %v"};
 std::shared_ptr<spdlog::sinks::stdout_color_sink_mt> Logger::_consoleSink {nullptr};
@@ -27,22 +28,32 @@ void Logger::InitLogger(std::string &logsDir)
     spdlog::set_pattern(MAIN_LOGGER_PATTERN); 
 }
 
-std::shared_ptr<spdlog::logger> Logger::GetClassLogger(std::string name)
+std::shared_ptr<spdlog::logger> Logger::GetClassLogger(const std::string& name)
 {
-    auto logger = spdlog::get(name);
-    if(logger == nullptr)
+    try
     {
-        spdlog::logger log(name, {_consoleSink, _fileSink});
-        log.set_level(spdlog::level::trace); 
-        spdlog::register_logger(std::make_shared<spdlog::logger>(log));
+        auto logger = spdlog::get(name);
+        if(logger == nullptr)
+        {
+            spdlog::logger log(name, {_consoleSink, _fileSink});
+            log.set_level(spdlog::level::trace); 
+            spdlog::register_logger(std::make_shared<spdlog::logger>(log));
 
-        return spdlog::get(name);
+            return spdlog::get(name);
 
+        }
+        else
+        {
+            return logger;
+        }
     }
-    else
+    catch(const std::exception& e)
     {
-        return logger;
+        std::cerr << e.what() << '\n';
+        return nullptr;
     }
+    
+
 }
 
 Logger::~Logger()

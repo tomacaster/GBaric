@@ -8,7 +8,7 @@ class Logger
 {
     public:
         static void InitLogger(std::string &logsDir);
-        static std::shared_ptr<spdlog::logger> GetClassLogger(std::string name);
+        static std::shared_ptr<spdlog::logger> GetClassLogger(const std::string& name);
         Logger();
         ~Logger();
     private:
