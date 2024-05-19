@@ -4,14 +4,13 @@
 #include <Windows.h>
 #endif
 #include "Consts.h"
-#include "Storage.h"
+#include "Memory/Storage.h"
 
+using namespace Memory;
 namespace fs = std::filesystem;
 
 std::shared_ptr<spdlog::logger> StorageBase::_logger { nullptr };
 std::string StorageBase::_homeDir {""};
-
-
 
 StorageBase::StorageBase()
 {

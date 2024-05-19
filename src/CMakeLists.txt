@@ -5,9 +5,10 @@ src/Logger.cpp
 src/MainWindow.cpp
 src/RenderSurface.cpp
 src/VlcPlayer.cpp
-src/DBEngineBase.cpp
-src/Storage.cpp
 src/GMediaPlayer.cpp
-src/DataObject.cpp
+src/Memory/DBEngineBase.cpp
+src/Memory/Storage.cpp
+src/Memory/DataObject.cpp
+src/Memory/FileManagerBase.cpp
 PARENT_SCOPE
 )

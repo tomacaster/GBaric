@@ -22,10 +22,11 @@ void Logger::InitLogger(std::string &logsDir)
 
     spdlog::logger logger("mainLogger", {_consoleSink, _fileSink});
     logger.set_level(spdlog::level::trace); 
+    spdlog::set_pattern(MAIN_LOGGER_PATTERN); 
     spdlog::register_logger(std::make_shared<spdlog::logger>(logger));
 
     spdlog::set_default_logger(spdlog::get("mainLogger")); 
-    spdlog::set_pattern(MAIN_LOGGER_PATTERN); 
+    
 }
 
 std::shared_ptr<spdlog::logger> Logger::GetClassLogger(const std::string& name)
@@ -50,7 +51,7 @@ std::shared_ptr<spdlog::logger> Logger::GetClassLogger(const std::string& name)
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
-        return nullptr;
+        return spdlog::default_logger();
     }
     
 

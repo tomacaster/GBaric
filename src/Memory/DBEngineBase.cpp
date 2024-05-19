@@ -1,5 +1,7 @@
-#include "DBEngineBase.h"
+#include "Memory/DBEngineBase.h"
 #include <fmt/core.h>
+
+using namespace Memory;
 
 std::shared_ptr<spdlog::logger> DBEngineBase::_logger {nullptr};
 

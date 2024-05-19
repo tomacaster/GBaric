@@ -5,7 +5,7 @@
 #include "MainWindow.h"
 #include "RenderSurface.h"
 #include "VlcPlayer.h"
-#include "Storage.h"
+#include "Memory/Storage.h"
 
 class ApplicationBase : public Gtk::Application
 {
@@ -14,7 +14,7 @@ class ApplicationBase : public Gtk::Application
         static std::shared_ptr<spdlog::logger> _logger;
     private:
         std::shared_ptr<VlcPlayer> player;
-        std::unique_ptr<StorageBase> _storage;
+        std::unique_ptr<Memory::StorageBase> _storage;
         Glib::RefPtr<Gtk::Builder> _builder;
         MainWindow *window;
         void OnSurfaceRealize();
