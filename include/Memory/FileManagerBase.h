@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <shared_mutex>
 #include "Logger.h"
 
 namespace Memory
@@ -13,9 +14,11 @@ namespace Memory
             FileManagerBase();
             std::shared_ptr<std::fstream> OpenFile(const fs::path& path, std::ios_base::openmode mode, bool createIf = true);
             bool SaveFile(const fs::path& path, bool overwrite = false);
-            bool CreateFile(const fs::path& path, bool overwrite = false);
+            static bool CreateFile(const fs::path& path, bool overwrite = false);
+            static bool CreateDirectory(const fs::path& path);
         private:
-            std::shared_ptr<spdlog::logger> _logger;
+            static std::shared_ptr<spdlog::logger> _logger;
+            std::shared_mutex _mutex;
     };
 }
 

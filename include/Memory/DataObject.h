@@ -3,7 +3,7 @@
 #include <memory>
 #include <cstddef>
 #include <vector>
-#include <mutex>
+#include <shared_mutex>
 
 namespace Memory
 {
@@ -21,6 +21,6 @@ namespace Memory
         protected:
             std::shared_ptr<std::vector<std::byte>> _data;
             size_t _size;
-            mutable std::mutex _mutex;
+            mutable std::shared_mutex _mutex;
     };
 }

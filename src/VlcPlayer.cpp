@@ -1,10 +1,13 @@
 #include <iostream>
 #include "VlcPlayer.h"
+#include "Memory/MemoryStream.h"
 #ifdef __linux__
 #include <gdk/x11/gdkx.h>
 #else
 #include <gdk/win32/gdkwin32.h>
 #endif
+
+using namespace Memory;
 
 std::shared_ptr<spdlog::logger> VlcPlayer::_logger {nullptr};
 
@@ -15,9 +18,9 @@ VlcPlayer::VlcPlayer(bool enableLogging)  : logging(enableLogging)
     {
         
     }
-    _instance = std::make_unique<VLC::Instance>(VLC::Instance(0, nullptr));
+    _instance = std::make_shared<VLC::Instance>(VLC::Instance(0, nullptr));
     if(enableLogging) _instance->logSet([this](int s, const libvlc_log_t *l, std::string m){ this->logCb(s, l, m); });
-    _mediaPlayer = std::make_unique<VLC::MediaPlayer>(VLC::MediaPlayer(*_instance.get()));
+    _mediaPlayer = std::make_shared<VLC::MediaPlayer>(VLC::MediaPlayer(*_instance.get()));
 }
 
 bool VlcPlayer::SetSurface(std::shared_ptr<RenderSurface> renderSurface)
@@ -46,10 +49,11 @@ bool VlcPlayer::SetSurface(std::shared_ptr<RenderSurface> renderSurface)
 
 bool VlcPlayer::SetMedia(std::string path)
 {
-    _media = std::make_shared<VLC::Media>(VLC::Media(*_instance, path, VLC::Media::FromPath));
-    _mediaPlayer->setMedia(*_media);
+    auto stream = Memory::MemoryStream();
+    VLC::Media med(*_instance, MemoryStream::Open, MemoryStream::Read, MemoryStream::Seek, MemoryStream::Close);
+    _mediaPlayer->setMedia(med);
     
- //   _mediaPlayer->play();
+   _mediaPlayer->play();
 
     return true;
 }

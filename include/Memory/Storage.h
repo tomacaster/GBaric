@@ -16,6 +16,6 @@ namespace Memory
         private:
             static std::shared_ptr<spdlog::logger> _logger;
             static std::string _homeDir;
-            static bool CreateFolders();
+            static bool CreateAppFolders();
     };
 }

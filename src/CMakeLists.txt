@@ -10,5 +10,6 @@ src/Memory/DBEngineBase.cpp
 src/Memory/Storage.cpp
 src/Memory/DataObject.cpp
 src/Memory/FileManagerBase.cpp
+src/Memory/MemoryStream.cpp
 PARENT_SCOPE
 )

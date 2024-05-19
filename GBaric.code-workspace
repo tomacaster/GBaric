@@ -81,7 +81,9 @@
 			"ranges": "cpp",
 			"cinttypes": "cpp",
 			"valarray": "cpp",
-			"expected": "cpp"
+			"expected": "cpp",
+			"shared_mutex": "cpp",
+			"filesystem": "cpp"
 		}
 	}
 }

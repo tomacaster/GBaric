@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <fmt/core.h>
 #ifdef _WIN32
 #include <Windows.h>
 #endif
@@ -7,10 +8,9 @@
 #include "Memory/Storage.h"
 
 using namespace Memory;
-namespace fs = std::filesystem;
 
 std::shared_ptr<spdlog::logger> StorageBase::_logger { nullptr };
-std::string StorageBase::_homeDir {""};
+std::string StorageBase::_homeDir { "" };
 
 StorageBase::StorageBase()
 {
@@ -19,7 +19,7 @@ StorageBase::StorageBase()
 
 std::string& StorageBase::InitStorage(std::string appName)
 {
-#ifdef __linux__
+
     auto appEnv = getenv(Consts::APP_DIR_ENV);
     if(appEnv) 
     {
@@ -27,19 +27,20 @@ std::string& StorageBase::InitStorage(std::string appName)
     }
     else
     {
-        _homeDir = fs::path(getenv("HOME")).string() + "/." + appName;
+#ifdef __linux__
+        std::string path = fmt::format("{}/.{}", getenv("HOME"), appName.c_str());
+#else
+        std::string path = fmt::format("{}\\{}", getenv("USERPROFILE"), appName.c_str());
+#endif
+        _homeDir = fs::path(path);
         setenv(Consts::APP_DIR_ENV, _homeDir.c_str(), 1);
     }
-    
-#else
-    _homeDir = fs::path(getenv("USERPROFILE")).string() +  "\\" + appName;
-#endif
 
     if(!fs::exists(_homeDir))
     {
         try
         {
-            auto res = fs::create_directory(_homeDir);
+            auto res = CreateDirectory(_homeDir); //fs::create_directory(_homeDir);
 
             if(!res)
             {
@@ -47,16 +48,14 @@ std::string& StorageBase::InitStorage(std::string appName)
             }
             else 
             {
-                
+                CreateAppFolders();
             }
         }
         catch(const std::exception& e)
         {
             std::cerr << "Error during initialization: " << e.what() << std::endl;
         }
-
     }
-    CreateFolders();
     Logger::InitLogger(_homeDir);
 
     return _homeDir;
@@ -67,9 +66,9 @@ std::string &StorageBase::GetHomedir()
     return _homeDir;
 }
 
-bool StorageBase::CreateFolders()
+bool StorageBase::CreateAppFolders()
 {
-    auto res = fs::create_directory(fs::path(fs::path(_homeDir) / "Data"));
+    auto res = CreateDirectory(fmt::format("{}/{}", _homeDir, "Data"));
 
     return res;
 }

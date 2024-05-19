@@ -17,8 +17,8 @@ class VlcPlayer
     private:
         static std::shared_ptr<spdlog::logger> _logger;
         bool logging = false;
-        std::unique_ptr<VLC::MediaPlayer> _mediaPlayer;
-        std::unique_ptr<VLC::Instance> _instance;
+        std::shared_ptr<VLC::MediaPlayer> _mediaPlayer;
+        std::shared_ptr<VLC::Instance> _instance;
         std::shared_ptr<RenderSurface> _renderSurface;
         VLC::MediaPtr _media;
 
