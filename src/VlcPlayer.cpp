@@ -6,7 +6,15 @@
 #else
 #include <gdk/win32/gdkwin32.h>
 #endif
+#include "Memory/FileManagerBase.h"
+#include <filesystem>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <iterator>
 
+#include <memory>
+ 
 using namespace Memory;
 
 std::shared_ptr<spdlog::logger> VlcPlayer::_logger {nullptr};
@@ -48,12 +56,46 @@ bool VlcPlayer::SetSurface(std::shared_ptr<RenderSurface> renderSurface)
 }
 
 bool VlcPlayer::SetMedia(std::string path)
-{
-    auto stream = Memory::MemoryStream();
-    VLC::Media med(*_instance, MemoryStream::Open, MemoryStream::Read, MemoryStream::Seek, MemoryStream::Close);
-    _mediaPlayer->setMedia(med);
+{    
+    try
+    {
+        Memory::FileManagerBase manager = Memory::FileManagerBase();
+        std::filesystem::path pth = std::filesystem::path("/home/michal/Documents/Projekty/video.mp4");
+    // auto rawFile = manager.OpenFile(path, std::ios_base::openmode::_S_bin, false);
+        std::basic_ifstream<char> fStream{pth, std::ios::binary};
+    std::vector<char> file_content((std::istreambuf_iterator<char>(fStream)), std::istreambuf_iterator<char>());
     
-   _mediaPlayer->play();
+    // Konwertuj vector<char> na vector<std::byte>
+    std::vector<std::byte> byte_content(file_content.size());
+    std::memcpy(byte_content.data(), file_content.data(), file_content.size());
+
+    auto data = std::make_shared<Memory::DataObject>();
+    data->SetData(std::move(byte_content)); // Przekazanie danych do obiektu DataObject
+
+    auto stream = std::make_shared<Memory::MemoryStream>(data);
+
+
+        VLC::Media med(*_instance, 
+                    [stream](void* opaque, void** datap, uint64_t* sizep) { return stream->Open(opaque, datap, sizep); }, 
+                    [stream](void* opaque, unsigned char* buf, size_t len) { return stream->Read(opaque, buf, len); },
+                    [stream](void* opaque, uint64_t offset) { return stream->Seek(opaque, offset); },
+                    [stream](void* opaque) { return stream->Close(opaque); });
+        _mediaPlayer->setMedia(med);
+
+    
+    
+        _mediaPlayer->play();
+    }
+    catch(const std::exception& e)
+    {
+        _logger->error(e.what());
+      //  std::cerr << e.what() << '\n';
+    }
+    
+
+
+    
+ 
 
     return true;
 }

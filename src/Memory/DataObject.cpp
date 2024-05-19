@@ -20,7 +20,7 @@ DataObject::~DataObject()
 const size_t &DataObject::SetData(const std::vector<std::byte> &data)
 {
     std::unique_lock lock(_mutex);
-    * _data = data;
+     _data = std::make_shared<std::vector<std::byte>>(data);
     _size = _data->size();
 
     return _size;

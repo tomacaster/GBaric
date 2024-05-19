@@ -3,20 +3,21 @@
 
 using namespace Memory;
 
-MemoryStream::MemoryStream() : _memory(nullptr)
+MemoryStream::MemoryStream(std::shared_ptr<DataObject> data) : _memory(std::move(data))
 {
 }
 
 int MemoryStream::Open(void *opaque, void **datap, uint64_t *sizep)
 {
-    auto stream = std::shared_ptr<DataObject>(static_cast<DataObject*>(opaque));
-    if(!stream)
+  //  auto stream = std::shared_ptr<DataObject>(static_cast<DataObject*>(opaque));
+    if(!_memory)
     {
         return 1;
     }
     else
     {
-        *datap = static_cast<void*>(stream->GetData().get());
+        auto d = reinterpret_cast<char*>(_memory->GetData().get());
+      //  *datap = 
     }
     return 0;
 }
