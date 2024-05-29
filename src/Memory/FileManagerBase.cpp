@@ -1,6 +1,5 @@
 #include "Memory/FileManagerBase.h"
-#include <iostream>
-#include <fstream>
+
 
 using namespace Memory;
 using std::fstream;
@@ -12,7 +11,7 @@ FileManagerBase::FileManagerBase()
     _logger = Logger::GetClassLogger("FileManager");
 }
 
-std::shared_ptr<std::fstream> FileManagerBase::OpenFile(const fs::path& path, std::ios_base::openmode mode, bool createIf)
+std::shared_ptr<std::ifstream> FileManagerBase::OpenFile(const fs::path& path, std::ios_base::openmode mode, bool createIf)
 {
     try
     {        
@@ -20,7 +19,7 @@ std::shared_ptr<std::fstream> FileManagerBase::OpenFile(const fs::path& path, st
         {
             std::ofstream {path};
         }
-        auto fb = std::make_shared<std::fstream>(path, mode);
+        auto fb = std::make_shared<std::ifstream>(path, mode);
         if(fb->is_open())
         {
             _logger->debug("Opening: \"{}\"", path.string());

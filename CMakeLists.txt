@@ -42,10 +42,16 @@ FetchContent_Declare(
   GIT_TAG        master
 )
 FetchContent_MakeAvailable(nlohmann_json)
-
+find_package(PkgConfig REQUIRED)
+pkg_search_module(LIBVLC REQUIRED libvlc)
 add_subdirectory(src)
 add_subdirectory(include)
- 
+ # Dodaj ścieżki do plików nagłówkowych libvlc
+include_directories(${LIBVLC_INCLUDE_DIRS})
+
+# Dodaj biblioteki libvlc
+link_directories(${LIBVLC_LIBRARY_DIRS})
+
 add_executable(${PROJECT_NAME} ${SRC_FILES})
 file(COPY ${CMAKE_SOURCE_DIR}/resources DESTINATION ${CMAKE_BINARY_DIR}/bin)
 
@@ -65,7 +71,7 @@ if(WIN32)
     #     src/Win32WindowManager.cpp
     # )
     
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBVLC_LIBRARIES}  ${GTK4_LIBRARIES}  ${GTKMM_LIBRARIES}  ${SQLiteCpp_LIBRARIES} spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBVLC_LIBRARIES} ${GTK4_LIBRARIES}  ${GTKMM_LIBRARIES}  ${SQLiteCpp_LIBRARIES} spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> Threads::Threads)
     target_compile_options(${PROJECT_NAME} PRIVATE ${GTK_CFLAGS_OTHER} -Wall -O2 -g ) # -fsanitize=address -fno-omit-frame-pointer -g
 
 elseif(UNIX)
@@ -79,12 +85,21 @@ elseif(UNIX)
 
     pkg_check_modules(XCB REQUIRED xcb)
 
+    set(SANITIZER_FLAGS "-fsanitize=address,undefined,leak")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${SANITIZER_FLAGS}")
+    set(CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} ${SANITIZER_FLAGS}")
+
     include_directories(${LIBVLC_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR} ${FMT_INCLUDE_DIRS})
     target_link_libraries(${PROJECT_NAME} PRIVATE ${XCB_LDFLAGS} ${LIBS_FILES} X11 ${LIBVLC_LIBRARIES}  ${GTK_LIBRARIES} ${GTKMM_LIBRARIES} ${FMT_LIBRARIES} ${SQLiteCpp_LIBRARIES} SQLiteCpp sqlite3 spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> Threads::Threads     PkgConfig::gstreamer
     PkgConfig::gstreamer-sdp
     PkgConfig::gstreamer-app
     PkgConfig::gstreamer-video)
-    target_compile_options(${PROJECT_NAME} PRIVATE ${XCB_CFLAGS} ${GTK_CFLAGS_OTHER} -Wall -O2 )
+
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address,undefined,leak")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,undefined,leak")
+    endif()
+    target_compile_options(${PROJECT_NAME} PRIVATE ${XCB_CFLAGS} ${GTK_CFLAGS_OTHER} -Wall -O0 )
 else()
     message(FATAL_ERROR "Unsupported platform")
 endif()

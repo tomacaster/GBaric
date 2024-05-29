@@ -3,7 +3,6 @@
 #include <memory>
 #include <cstddef>
 #include <vector>
-#include <shared_mutex>
 
 namespace Memory
 {
@@ -11,16 +10,15 @@ namespace Memory
     {
         public:
             DataObject();
-            explicit DataObject(std::shared_ptr<std::vector<std::byte>> dataPtr);
+            DataObject(std::shared_ptr<std::vector<char>> dataPtr);
             ~DataObject();
-            const size_t& SetData(const std::vector<std::byte>& data);
-            std::shared_ptr<std::vector<std::byte>> GetData();
+            size_t SetData(const std::vector<char>& data);
+            std::shared_ptr<std::vector<char>> GetData() const;
             void Allocate(size_t size);
             bool resize(size_t size, bool force = false);
             const size_t& size() const;
-        protected:
-            std::shared_ptr<std::vector<std::byte>> _data;
+        private:
+            std::shared_ptr<std::vector<char>> _data;
             size_t _size;
-            mutable std::shared_mutex _mutex;
     };
 }
