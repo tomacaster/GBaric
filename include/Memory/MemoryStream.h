@@ -8,6 +8,7 @@
 
 namespace Memory
 {
+    /// @brief Class for memory stream impolemented to be compatible with VLC imem
     class MemoryStream
     {
         public:

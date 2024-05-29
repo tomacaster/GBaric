@@ -6,6 +6,8 @@
 
 namespace Memory
 {
+    /// @brief Basic data object for streams, etc.
+    /// Based on vector<char>
     class DataObject
     {
         public:
