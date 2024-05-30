@@ -9,35 +9,39 @@ namespace Players
 {
     namespace VlcPlayer
     {
-        typedef class struct Player
+        class PlayerObject
         {
-            public:
-                libvlc_instance_t* _instance;
-                libvlc_media_t* _media;
-                libvlc_media_player_t* _player;
+        public:
+            libvlc_instance_t* _instance;
+            libvlc_media_t* _media;
+            libvlc_media_player_t* _player;
 
-                Player() : _instance(nullptr), _media(nullptr), _player(nullptr) {};
-                ~Player() 
-                {
+            PlayerObject() : _instance(nullptr), _media(nullptr), _player(nullptr) {}
+            ~PlayerObject()
+            {
+                if (_media)
                     libvlc_media_release(_media);
+                if (_player)
                     libvlc_media_player_release(_player);
+                if (_instance)
                     libvlc_release(_instance);
-                };
-        } Player;
+            }
+        };
 
         class VlcPlayerBase
         {
-            public:
-                std::shared_ptr<spdlog::logger> _logger;
-                bool _logging = false;
-                std::shared_ptr<RenderSurface> _renderSurface;
-                VlcPlayerBase(bool &enableVlcLogging);
-                void SetupSurface(void* surface);
-                bool SetSurface(std::shared_ptr<RenderSurface> renderSurface);
-                bool SetMedia(std::string path);
-            private:
-                void LogCb(int size, const libvlc_log_t* logT, std::string message);
+        public:
+            std::shared_ptr<spdlog::logger> _logger;
+            bool _logging;
+            std::shared_ptr<RenderSurface> _renderSurface;
+            std::shared_ptr<PlayerObject> _player;
 
+            VlcPlayerBase(bool enableVlcLogging);
+            void SetupSurface(void* surface);
+            bool SetSurface(std::shared_ptr<RenderSurface> renderSurface);
+            virtual bool SetMedia(const std::string& path) = 0;
+        private:
+            void LogCb(int size, const libvlc_log_t* logT, const std::string& message);
         };
     }
 }

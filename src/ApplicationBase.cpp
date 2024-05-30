@@ -8,7 +8,7 @@ std::shared_ptr<spdlog::logger> ApplicationBase::_logger {nullptr};
 
 ApplicationBase::ApplicationBase(std::string appName) : 
     Gtk::Application(appName), 
-    player(std::make_shared<VlcPlayer>(true)),
+    player(std::make_shared<VlcPlayer::VlcMemoryPlayer>(true)),
     _storage(nullptr)
 {
 
@@ -18,6 +18,7 @@ void ApplicationBase::OnSurfaceRealize()
 {
     player->SetSurface(window->getSurface());
     player->SetMedia("/home/michal/Documents/Projekty/video.mp4");
+
 }
 
 void ApplicationBase::onWindowRealize()

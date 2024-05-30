@@ -16,7 +16,8 @@ DataObject::~DataObject()
 
 }
 
-size_t DataObject::SetData(const std::vector<char>& data) {
+size_t DataObject::SetData(const std::vector<char>& data) 
+{
     _data = std::make_shared<std::vector<char>>(data);
     _size = _data->size();
     return _size;

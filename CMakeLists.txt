@@ -85,9 +85,9 @@ elseif(UNIX)
 
     pkg_check_modules(XCB REQUIRED xcb)
 
-    set(SANITIZER_FLAGS "-fsanitize=address,undefined,leak")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${SANITIZER_FLAGS}")
-    set(CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} ${SANITIZER_FLAGS}")
+    # set(SANITIZER_FLAGS "-fsanitize=address,undefined,leak")
+    # set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${SANITIZER_FLAGS}")
+    # set(CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} ${SANITIZER_FLAGS}")
 
     include_directories(${LIBVLC_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR} ${FMT_INCLUDE_DIRS})
     target_link_libraries(${PROJECT_NAME} PRIVATE ${XCB_LDFLAGS} ${LIBS_FILES} X11 ${LIBVLC_LIBRARIES}  ${GTK_LIBRARIES} ${GTKMM_LIBRARIES} ${FMT_LIBRARIES} ${SQLiteCpp_LIBRARIES} SQLiteCpp sqlite3 spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> Threads::Threads     PkgConfig::gstreamer
@@ -95,10 +95,10 @@ elseif(UNIX)
     PkgConfig::gstreamer-app
     PkgConfig::gstreamer-video)
 
-    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address,undefined,leak")
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,undefined,leak")
-    endif()
+    # if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    #     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address,undefined,leak")
+    #     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,undefined,leak")
+    # endif()
     target_compile_options(${PROJECT_NAME} PRIVATE ${XCB_CFLAGS} ${GTK_CFLAGS_OTHER} -Wall -O0 )
 else()
     message(FATAL_ERROR "Unsupported platform")
