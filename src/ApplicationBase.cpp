@@ -3,19 +3,71 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#ifdef __linux__
-#include <gdk/x11/gdkx.h>
-#else
-#include <gdk/win32/gdkwin32.h>
-#endif
-#include <gtk/gtk.h>
 
-ApplicationBase::ApplicationBase(std::string appName) : Gtk::Application(appName), refBuilder(Gtk::Builder::create()), mainWindow(nullptr)
+std::shared_ptr<spdlog::logger> ApplicationBase::_logger {nullptr};
+
+ApplicationBase::ApplicationBase(std::string appName) : 
+    Gtk::Application(appName), 
+    player(std::make_shared<VlcPlayer::VlcMemoryPlayer>(true)),
+    _storage(nullptr)
+{
+
+}
+
+void ApplicationBase::OnSurfaceRealize()
+{
+    player->SetSurface(window->getSurface());
+    player->SetMedia("/home/michal/Documents/Projekty/video.mp4");
+
+}
+
+void ApplicationBase::onWindowRealize()
+{
+
+}
+
+Glib::RefPtr<ApplicationBase> ApplicationBase::create(std::string &appName)
 {
     try
     {
+        _logger = Logger::GetClassLogger("AppBase");
+         
+        auto res = Gio::Resource::create_from_file("resources/resources.gresource");
+        res->register_global();
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+        return Glib::RefPtr<ApplicationBase>();
+        _logger->error(e.what());
+    }
+    
+    if(id_is_valid(appName))
+    {
+        return Glib::RefPtr<ApplicationBase>(new ApplicationBase(appName));
+    }
+    else
+    {   
+        _logger->critical("App name is not valid {}", appName);
+        return nullptr;
+    }
+    
+}
+
+void ApplicationBase::on_startup()
+{
+    Gtk::Application::on_startup();
+}
+
+void ApplicationBase::on_activate()
+{
+    try
+    {
+        _builder = Gtk::Builder::create();
+      //  _logger = Logger::GetLogger();
 #ifdef __linux__
-        auto res = refBuilder->add_from_file("resources/gui.glade");
+
+        auto res = _builder->add_from_resource("/resources/gui.glade"); //("resources/gui.glade");
         if(!res)
         {
             std::cout << "Cannot load resources" << std::endl;
@@ -23,7 +75,7 @@ ApplicationBase::ApplicationBase(std::string appName) : Gtk::Application(appName
            // return false;
         }  
 #else
-        auto res = refBuilder->add_from_file("resources\\gui.glade");
+        auto res = _builder->add_from_file("resources\\gui.glade");
         if(!res)
         {
             std::cout << "Cannot load resources" << std::endl;
@@ -47,36 +99,23 @@ ApplicationBase::ApplicationBase(std::string appName) : Gtk::Application(appName
         std::cerr << "BuilderError: " << ex.what() << std::endl;
         // return Glib::RefPtr<ApplicationBase>();
     }
-
-   
-}
-
-Glib::RefPtr<ApplicationBase> ApplicationBase::create(std::string appName)
-{
-    return Glib::RefPtr<ApplicationBase>(new ApplicationBase(appName));
-}
-
-void ApplicationBase::on_startup()
-{
-
-
-    auto win =  Gtk::Builder::get_widget_derived<MainWindow>(refBuilder, Glib::ustring("MainWindow"));
-    if(win)
+    catch(const std::exception& ex)
     {
-        win->show();
-        // mainWindow->signal_delete_event().connect(sigc::mem_fun(*this, &ApplicationBase::OnDestroy));    
-        // mainWindow->playButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPlayButtonPressed) ); 
-        // mainWindow->pauseButton->signal_clicked().connect( sigc::mem_fun(*this,&ApplicationBase::OnPauseButtonPressed) ); 
-        // mainWindow->sliderData->sliderData->signal_button_press_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderButtonPressed));
-        // mainWindow->sliderData->sliderData->signal_button_release_event().connect(sigc::mem_fun(*this,&ApplicationBase::OnSliderReleased));
-        // mainWindow->renderSurface->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::OnCreateMain));
+        std::cerr << ex.what() << std::endl;
     }
 
-    Gtk::Application::on_startup();
+    window = Gtk::Builder::get_widget_derived<MainWindow>(_builder, Glib::ustring("MainWindow"));
+    window->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::onWindowRealize));
+    window->getSurface()->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::OnSurfaceRealize));
+    window->set_size_request(800, 600);
+
+    add_window(*window);
+    window->show();
 }
 
-void ApplicationBase::on_activate()
+void ApplicationBase::on_shutdown()
 {
+    
 }
 
 ApplicationBase::~ApplicationBase()

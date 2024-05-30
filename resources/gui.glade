@@ -6,7 +6,7 @@
       <object class="GtkBox" id="Box">
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkDrawingArea" id="RenderSurface">
+          <object class="GtkDrawingArea" id="RenderSurface">focusable
             <property name="vexpand">1</property>
           </object>
         </child>

@@ -1,8 +1,16 @@
 set(SRC_FILES
 src/ApplicationBase.cpp
 src/GBaric.cpp
+src/Logger.cpp
 src/MainWindow.cpp
 src/RenderSurface.cpp
-src/VlcPlayer.cpp
+src/Players/VlcPlayer/VlcMemoryPlayer.cpp
+src/Players/VlcPlayer/VlcPlayerBase.cpp
+src/GMediaPlayer.cpp
+src/Memory/DBEngineBase.cpp
+src/Memory/Storage.cpp
+src/Memory/DataObject.cpp
+src/Memory/FileManagerBase.cpp
+src/Memory/MemoryStream.cpp
 PARENT_SCOPE
 )
