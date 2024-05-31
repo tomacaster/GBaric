@@ -2,18 +2,19 @@
 #include <chrono>
 #include <thread>
 #include <string>
+#include "Players/Gst/GstPipelineBase.h"
 #include "Logger.h"
 #include "ApplicationBase.h"
 #include "MainWindow.h"
 #include "Memory/Storage.h"
 #include "Memory/DataObject.h"
 #include "Memory/DBEngineBase.h"
-#include <gstreamer-1.0/gst/gst.h>
 
 std::string appName { "iotoys.gbaric.player" };
 
 int main(int argc, char *argv[])
 {
+    auto g = Players::GstPlayer::GstPipeLineBase(argc, argv);
 //   GstElement *pipeline;
 //   GstBus* gstBus;
 //   GstMessage* msg;

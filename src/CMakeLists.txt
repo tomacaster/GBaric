@@ -6,6 +6,8 @@ src/MainWindow.cpp
 src/RenderSurface.cpp
 src/Players/VlcPlayer/VlcMemoryPlayer.cpp
 src/Players/VlcPlayer/VlcPlayerBase.cpp
+src/Players/Gst/GstPipelineBase.cpp
+src/Players/Gst/GstPipelineObj.cpp
 src/GMediaPlayer.cpp
 src/Memory/DBEngineBase.cpp
 src/Memory/Storage.cpp
