@@ -3,7 +3,7 @@
 #include "vlc/vlc.h"
 #include "Logger.h"
 #include "RenderSurface.h"
-#include "Memory/DataObject.h"
+
 
 namespace Players
 {

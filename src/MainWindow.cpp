@@ -19,7 +19,8 @@ MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     // }
     surface = std::shared_ptr<RenderSurface>(Gtk::Builder::get_widget_derived<RenderSurface>(_builder, "RenderSurface"));
     if(surface) {} else std::cerr << "Cannot surface" << std::endl;
-
+    scale = std::shared_ptr<Gtk::Scale>(_builder->get_widget<Gtk::Scale>("ProgressBar"));
+    if(scale) {} else std::cerr << "Cannot scale" << std::endl;
     grid = std::shared_ptr<Gtk::Grid>(_builder->get_widget<Gtk::Grid>("Grid"));
     if(grid) {} else std::cerr << "Cannot grid" << std::endl;
     
@@ -27,8 +28,7 @@ MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     if(playButton) {} else std::cerr << "Cannot playButton" << std::endl;
     pauseButton = std::shared_ptr<Gtk::Button>(_builder->get_widget<Gtk::Button>("PauseButton"));
     if(pauseButton) {} else std::cerr << "Cannot pauseButton" << std::endl;
-    scale = std::shared_ptr<Gtk::Scale>(_builder->get_widget<Gtk::Scale>("ProgressBar"));
-    if(scale) {} else std::cerr << "Cannot scale" << std::endl;
+
 }
 
 MainWindow::~MainWindow()

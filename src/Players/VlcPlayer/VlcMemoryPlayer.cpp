@@ -1,6 +1,7 @@
 #include "Players/VlcPlayer/VlcMemoryPlayer.h"
 #include "Memory/FileManagerBase.h"
-#include "Memory/DataObject.h"
+#include "vlc/vlc.h"
+#include "vlc/libvlc_media.h"
 #include <vector>
 #include <iterator>
 #include <memory>
@@ -36,10 +37,10 @@ namespace Players {
                 auto file = manager.OpenFile(path, std::ios_base::binary, false);
                 std::vector<char> file_content((std::istreambuf_iterator<char>(*file)), std::istreambuf_iterator<char>());
                 auto obj = std::make_shared<Memory::DataObject>();
-                obj->SetData(file_content);
+                obj->SetData(std::vector<char>(file_content));
                 _memory = obj;
-
-                auto media = libvlc_media_new_callbacks(_player->_instance, *this->Open, *this->Read, *this->Seek, *this->Close, static_cast<void*>(_memory.get()));
+                
+                auto media = libvlc_media_new_callbacks(*this->Open, *this->Read, *this->Seek, *this->Close, static_cast<void*>(_memory.get()));
 
                 libvlc_media_player_set_media(_player->_player, media);
                 libvlc_media_player_play(_player->_player);
@@ -70,10 +71,10 @@ namespace Players {
             }
             return 0;
         }
-        ssize_t VlcMemoryPlayer::Read(void *opaque, unsigned char *buf, size_t len)
+        ssize_t VlcMemoryPlayer::Read(void* opaque, unsigned char* buf, size_t len)
         {
             std::shared_lock lock(_mutex); 
-            auto dataPtr = static_cast<std::shared_ptr<std::vector<std::byte>>*>(opaque);
+          //  auto dataPtr = static_cast<std::shared_ptr<std::vector<std::byte>>*>(opaque);
 
             if (!_memory ) {
 
@@ -82,7 +83,7 @@ namespace Players {
 
             auto& data = *_memory; 
 
-            size_t bytesToCopy = std::min(len, data.size()); 
+            size_t bytesToCopy = std::min(len, data.Size()); 
             std::memcpy(buf, data.GetData()->data(), bytesToCopy);
 
             return static_cast<ssize_t>(bytesToCopy);

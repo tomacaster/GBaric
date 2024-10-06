@@ -29,3 +29,4 @@ class MainWindow : public Gtk::ApplicationWindow
         static std::shared_ptr<spdlog::logger> _logger;
 
 };
+

@@ -1,2 +1,5 @@
 # GBaric
-Experimental libvlcpp &amp; gtkmm4 media player
+
+Version: 0.0.1
+
+TODO: readme

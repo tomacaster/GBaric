@@ -7,6 +7,7 @@
 	],
 	"settings": {
 		"files.associations": {
+			".fantomasignore": "ignore",
 			"chrono": "cpp",
 			"compare": "cpp",
 			"condition_variable": "cpp",
@@ -83,7 +84,17 @@
 			"valarray": "cpp",
 			"expected": "cpp",
 			"shared_mutex": "cpp",
-			"filesystem": "cpp"
-		}
+			"filesystem": "cpp",
+			"cfenv": "cpp",
+			"complex": "cpp",
+			"source_location": "cpp",
+			"stdfloat": "cpp",
+			"typeindex": "cpp",
+			"text_encoding": "cpp"
+		},
+		"cpp.betterclasses.hppExtension": "h",
+		"cpp.betterclasses.lowerCaseNamespace": false,
+		"cpp.betterclasses.snakeCaseFilename": false,
+		"cpp.betterclasses.useIfndef": false
 	}
 }
