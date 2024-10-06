@@ -1,3 +1,6 @@
 [submodule "external/libvlcpp"]
 	path = external/libvlcpp
 	url = https://code.videolan.org/videolan/libvlcpp.git
+[submodule "components/mptf_core"]
+	path = components/mptf_core
+	url = https://github.com/tomacaster/mptf_core.git
