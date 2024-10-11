@@ -2,12 +2,11 @@
 
 #include <gtkmm/builder.h>
 #include <gtkmm.h>
-#include "gtkmm/drawingarea.h"
 #include <gtkmm/window.h>
 #include <gdkmm/cairocontext.h>
-#include <gtkmm/video.h>
+#include <gtkmm/glarea.h>
 
-class RenderSurface : public Gtk::Video
+class RenderSurface : public Gtk::GLArea
 {
     public:
         RenderSurface(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);

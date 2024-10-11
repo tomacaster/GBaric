@@ -1,9 +1,7 @@
 #pragma once
 
 #include <gtkmm-4.0/gtkmm.h>
-#include "Logger.h"
 #include "MainWindow.h"
-#include "RenderSurface.h"
 #include "Players/VlcPlayer/VlcMemoryPlayer.h"
 #include "Memory/Storage.h"
 

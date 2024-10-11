@@ -1,10 +1,10 @@
 #include "RenderSurface.h"
 
 RenderSurface::RenderSurface(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder) : 
-    Gtk::Video(cobject),
+    Gtk::GLArea(cobject),
     m_builder(builder)
 {
-    
+    Gtk::GLArea::set_required_version(3, 3);
    // set_draw_func(sigc::mem_fun(*this, &RenderSurface::OnDraw));
 }
 

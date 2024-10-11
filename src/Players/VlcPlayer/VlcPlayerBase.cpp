@@ -4,10 +4,7 @@
 #else
 #include <gdk/win32/gdkwin32.h>
 #endif
-#include "Memory/FileManagerBase.h"
-#include <filesystem>
 #include <iostream>
-#include <fstream>
 
 namespace Players
 {

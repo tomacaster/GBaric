@@ -1,6 +1,5 @@
 #include "Players/VlcPlayer/VlcMemoryPlayer.h"
 #include "Memory/FileManagerBase.h"
-#include "vlc/vlc.h"
 #include "vlc/libvlc_media.h"
 #include <vector>
 #include <iterator>
