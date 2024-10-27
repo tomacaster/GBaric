@@ -17,6 +17,7 @@ MainWindow::MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     // _menuButton = std::shared_ptr<Gtk::MenuButton>(_builder->get_widget<Gtk::MenuButton>("MenuButton"));
     // if(_menuButton) {
     // }
+    
     surface = std::shared_ptr<RenderSurface>(Gtk::Builder::get_widget_derived<RenderSurface>(_builder, "RenderSurface"));
     if(surface) {} else std::cerr << "Cannot surface" << std::endl;
     scale = std::shared_ptr<Gtk::Scale>(_builder->get_widget<Gtk::Scale>("ProgressBar"));

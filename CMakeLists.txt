@@ -23,6 +23,8 @@ set(BINARY_DIR "${CMAKE_BINARY_DIR}/bin/")
 # Znajdowanie pakietów
 find_package(PkgConfig REQUIRED)
 find_package(Threads REQUIRED)
+find_package(OpenGL REQUIRED)  # Dodane dla OpenGL
+
 pkg_search_module(FMT REQUIRED fmt)
 pkg_check_modules(SQLiteCpp REQUIRED sqlite3)
 pkg_check_modules(GTK REQUIRED gtk4)
@@ -85,6 +87,7 @@ if(WIN32)
         spdlog::spdlog 
         $<$<BOOL:${MINGW}>:ws2_32> 
         Threads::Threads
+        OpenGL::GL
     )
     target_compile_options(${PROJECT_NAME} PRIVATE ${GTK_CFLAGS_OTHER} -Wall -O2 -g )
     
@@ -113,6 +116,7 @@ elseif(UNIX)
         PkgConfig::gstreamer-sdp
         PkgConfig::gstreamer-app
         PkgConfig::gstreamer-video
+        OpenGL::GL 
     )
     target_compile_options(${PROJECT_NAME} PRIVATE ${XCB_CFLAGS} ${GTK_CFLAGS_OTHER} -Wall -O0 )
     
@@ -139,6 +143,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${GTK_INCLUDE_DIRS} 
     ${GTKMM_INCLUDE_DIRS} 
     ${SQLiteCpp_INCLUDE_DIRS}
+    ${OPENGL_INCLUDE_DIR}  # Dodane dla OpenGL
 )
 
 # Ustawienia RPATH

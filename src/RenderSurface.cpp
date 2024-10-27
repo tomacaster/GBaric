@@ -1,15 +1,20 @@
 #include "RenderSurface.h"
+#include <iostream>
+#include <cstring>
 
-RenderSurface::RenderSurface(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder) : 
-    Gtk::GLArea(cobject),
-    m_builder(builder)
+RenderSurface::RenderSurface(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+    : Gtk::GLArea(cobject),
+      m_builder(builder),
+      videoTexture(0),
+      frameAvailable(false)
 {
-    Gtk::GLArea::set_required_version(3, 3);
-   // set_draw_func(sigc::mem_fun(*this, &RenderSurface::OnDraw));
+    set_required_version(3, 3);
+    set_has_depth_buffer(false);
+    signal_render().connect(sigc::mem_fun(*this, &RenderSurface::on_render), false);
 }
 
 GdkSurface* RenderSurface::GetHandle()
-{ 
+{
     return this->get_native()->get_surface()->gobj();
 }
 
@@ -18,17 +23,45 @@ RenderSurface::~RenderSurface()
 
 }
 
-void RenderSurface::OnDraw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height)
+void RenderSurface::on_new_frame(void* pixels, int width, int height)
 {
-    // GtkWidget *widget = GTK_WIDGET(gobj());
-    // GtkStyleContext *context;
-    // GtkAllocation alloc;
-    // cairo_t *ccr = const_cast<cairo_t*>(cr->cobj());
+    std::lock_guard<std::mutex> lock(frameMutex);
 
-    // context = gtk_widget_get_style_context (widget);
-    // gtk_widget_get_allocation (widget, &alloc);
+    // Skopiuj dane ramki
+    size_t frame_size = width * height * 4;
+    videoFrameBuffer.resize(frame_size);
+    std::memcpy(videoFrameBuffer.data(), pixels, frame_size);
 
-    // gtk_render_background(context, ccr, 0, 0, alloc.width, alloc.height);
-    // gtk_render_frame(context, ccr, 0, 0, alloc.width, alloc.height);
+    videoWidth = width;
+    videoHeight = height;
+    frameAvailable = true;
+}
 
+
+bool RenderSurface::on_render(const Glib::RefPtr<Gdk::GLContext>& context)
+{
+    std::lock_guard<std::mutex> lock(frameMutex);
+
+    if (frameAvailable)
+    {
+        glBindTexture(GL_TEXTURE_2D, videoTexture);
+
+        if (videoWidth != texWidth || videoHeight != texHeight)
+        {
+            texWidth = videoWidth;
+            texHeight = videoHeight;
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texWidth, texHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, videoFrameBuffer.data());
+        }
+        else
+        {
+            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, texWidth, texHeight, GL_RGBA, GL_UNSIGNED_BYTE, videoFrameBuffer.data());
+        }
+
+        frameAvailable = false;
+    }
+
+    // Renderowanie tekstury
+    // ... (Twoje kod renderowania OpenGL)
+
+    return true;
 }

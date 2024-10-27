@@ -4,7 +4,7 @@
     <file>drawable/button_pause.svg</file>
     <file>drawable/button_play.svg</file>
     <file>drawable/main_icon.svg</file>
-    <file compressed="true">gui.glade</file>
+    <file>gui.glade</file>
     <file alias="style.css">style.css</file>
   </gresource>
 </gresources>

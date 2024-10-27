@@ -1,8 +1,9 @@
 #pragma once
 
 #include <gtkmm-4.0/gtkmm.h>
+
 #include "MainWindow.h"
-#include "Players/VlcPlayer/VlcMemoryPlayer.h"
+#include "Players/VlcPlayer/VlcGLPlayer.h"
 #include "Memory/Storage.h"
 
 namespace VlcPlayer = Players::VlcPlayer;
@@ -13,10 +14,10 @@ class ApplicationBase : public Gtk::Application
         ApplicationBase(std::string appName);
         static std::shared_ptr<spdlog::logger> _logger;
     private:
-        std::shared_ptr<VlcPlayer::VlcMemoryPlayer> player;
+        std::shared_ptr<VlcPlayer::VlcGLPlayer> _player;
         std::unique_ptr<Memory::StorageBase> _storage;
         Glib::RefPtr<Gtk::Builder> _builder;
-        MainWindow *window;
+        MainWindow *window {nullptr};
         void OnSurfaceRealize();
         void onWindowRealize();
     public:

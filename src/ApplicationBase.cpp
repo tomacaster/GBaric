@@ -8,7 +8,7 @@ std::shared_ptr<spdlog::logger> ApplicationBase::_logger {nullptr};
 
 ApplicationBase::ApplicationBase(std::string appName) : 
     Gtk::Application(appName), 
-    player(std::make_shared<VlcPlayer::VlcMemoryPlayer>(true)),
+    _player(nullptr),
     _storage(nullptr)
 {
 
@@ -16,8 +16,6 @@ ApplicationBase::ApplicationBase(std::string appName) :
 
 void ApplicationBase::OnSurfaceRealize()
 {
-    player->SetSurface(window->getSurface());
-    player->SetMedia("/home/michal/Documents/Projekty/video.mp4");
 
 }
 
@@ -108,7 +106,8 @@ void ApplicationBase::on_activate()
     window->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::onWindowRealize));
     window->getSurface()->signal_realize().connect(sigc::mem_fun(*this, &ApplicationBase::OnSurfaceRealize));
     window->set_size_request(800, 600);
-
+    _player = std::make_shared<VlcPlayer::VlcGLPlayer>(*(window->getSurface()), true);
+    _player->SetMedia("/home/michal/Documents/Projekty/bbb_sunflower_1080p_60fps_normal.mp4");
     add_window(*window);
     window->show();
 }

@@ -41,10 +41,11 @@ int main(int argc, char *argv[])
   auto db = Memory::DBEngineBase(homedir + "/Data/db.db3");
   db.CreateTable("Playlist", "ID INTEGER PRIMARY KEY AUTOINCREMENT,""Nazwa TEXT NOT NULL,""Plik TEXT NOT NULL");
 	auto app = ApplicationBase::create(appName);
-  auto play = VlcPlayer::VlcMemoryPlayer(false);
+  //auto play = VlcPlayer::VlcMemoryPlayer(false);
   
 
   //play.SetMedia("/home/michal/Documents/Projekty/bbb_sunflower_1080p_60fps_normal.mp4");
 //g.PlayVideo();
+
 	return app->run(0, nullptr);
 }

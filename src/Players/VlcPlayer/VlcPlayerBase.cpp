@@ -10,10 +10,10 @@ namespace Players
 {
     namespace VlcPlayer
     {
-        VlcPlayerBase::VlcPlayerBase(bool enableVlcLogging) :
+        VlcPlayerBase::VlcPlayerBase(RenderSurface& surface, bool enableVlcLogging) :
             _logger(spdlog::get("vlc_logger")),
             _logging(enableVlcLogging),
-            _renderSurface(nullptr),
+            _renderSurface(&surface),
             _player(std::make_shared<PlayerObject>())
         {
             if (_logging && !_logger) 
@@ -22,16 +22,15 @@ namespace Players
             }
         }
 
-        bool VlcPlayerBase::SetSurface(std::shared_ptr<RenderSurface> renderSurface)
+        bool VlcPlayerBase::SetSurface()
         {
             if (_player->_instance == nullptr) {
                 std::cerr << "You should create player first" << std::endl;
                 return false;
             }
-            _renderSurface = renderSurface;
 
 #ifdef __linux__
-            auto handle = GDK_SURFACE_XID(renderSurface->GetHandle());
+            auto handle = GDK_SURFACE_XID(_renderSurface->GetHandle());
             libvlc_media_player_set_xwindow(_player->_player, handle);
 #else
             auto handle = (GTK_WINDOW_HANDLE(_renderSurface->GetHandle()));

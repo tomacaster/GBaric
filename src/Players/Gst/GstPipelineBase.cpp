@@ -22,7 +22,8 @@ namespace Players::GstPlayer
 
     }
 
-    template<typename T> bool GstPipeLineBase::BinAddMany(T &obj, std::vector<T> &elements)
+    template<typename T> 
+    bool GstPipeLineBase::BinAddMany(T &obj, std::vector<T> &elements)
     {
         for(auto item : elements)
         {

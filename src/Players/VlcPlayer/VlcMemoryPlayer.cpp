@@ -1,17 +1,21 @@
 #include "Players/VlcPlayer/VlcMemoryPlayer.h"
-#include "Memory/FileManagerBase.h"
-#include "vlc/libvlc_media.h"
+
 #include <vector>
 #include <iterator>
 #include <memory>
 #include <cstring>
+
+#include "vlc/libvlc_media.h"
+
+#include "Memory/FileManagerBase.h"
+#include "Storage/FileCommon.h"
 
 namespace Players {
     namespace VlcPlayer {
         std::shared_ptr<Memory::DataObject> VlcMemoryPlayer::_memory;
         std::shared_mutex VlcMemoryPlayer::_mutex;
 
-        VlcMemoryPlayer::VlcMemoryPlayer(bool enableLogging) : VlcPlayerBase(enableLogging) 
+        VlcMemoryPlayer::VlcMemoryPlayer(RenderSurface renderSurface,bool enableLogging) : VlcPlayerBase(renderSurface, enableLogging) 
         {
             _logger = Logger::GetClassLogger("VlcPlayer");
             if (!_logger) 
@@ -32,12 +36,9 @@ namespace Players {
         {
             try 
             {
-                Memory::FileManagerBase manager;
-                auto file = manager.OpenFile(path, std::ios_base::binary, false);
-                std::vector<char> file_content((std::istreambuf_iterator<char>(*file)), std::istreambuf_iterator<char>());
-                auto obj = std::make_shared<Memory::DataObject>();
-                obj->SetData(std::vector<char>(file_content));
-                _memory = obj;
+                Memory::Storage::FileCommon file(path);
+
+                _memory = file.Open();
                 
                 auto media = libvlc_media_new_callbacks(*this->Open, *this->Read, *this->Seek, *this->Close, static_cast<void*>(_memory.get()));
 

@@ -13,10 +13,10 @@ using namespace std;
 namespace Players {
     namespace VlcPlayer {
 
-        class VlcMemoryPlayer : public Players::VlcPlayer::VlcPlayerBase 
+        class VlcMemoryPlayer : protected VlcPlayerBase 
         {
             public:
-                VlcMemoryPlayer(bool enableLogging);
+                VlcMemoryPlayer(RenderSurface renderSurface, bool enableLogging);
                 ~VlcMemoryPlayer();
 
                 bool SetMedia(const std::string& path) override;
