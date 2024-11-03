@@ -29,14 +29,14 @@ namespace Players
                 return false;
             }
 
-#ifdef __linux__
-            auto handle = GDK_SURFACE_XID(_renderSurface->GetHandle());
-            libvlc_media_player_set_xwindow(_player->_player, handle);
-#else
-            auto handle = (GTK_WINDOW_HANDLE(_renderSurface->GetHandle()));
-            libvlc_media_player_set_hwnd(_player->_player, handle);
-#endif
-            _logger->info("Player created");
+// #ifdef __linux__
+//             auto handle = GDK_SURFACE_XID(_renderSurface->GetHandle());
+//             libvlc_media_player_set_xwindow(_player->_player, handle);
+// #else
+//             auto handle = (GTK_WINDOW_HANDLE(_renderSurface->GetHandle()));
+//             libvlc_media_player_set_hwnd(_player->_player, handle);
+// #endif
+//             _logger->info("Player created");
             return true;
         }
 

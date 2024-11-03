@@ -15,9 +15,8 @@ std::string appName { "iotoys.gbaric.player" };
 int main(int argc, char *argv[])
 {
    auto g = Players::Gst::GstVideoPlayer(argc, argv);
-  GstElement *pipeline;
-  GstBus* gstBus;
-  GstMessage* msg;
+
+
   // gst_init(&argc, &argv);
 
   // pipeline = gst_parse_launch("playbin uri=https://gstreamer.freedesktop.org/data/media/sintel_trailer-480p.webm",

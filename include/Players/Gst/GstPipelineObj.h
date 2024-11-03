@@ -19,12 +19,12 @@ namespace Players
                 void AddSource(GstElement * source);
                 GstElement *GetPipeline();
             private:  
-                std::shared_ptr<GstElement> _bin;
-                std::shared_ptr<GstElement> _pipeline;
-                std::vector<std::shared_ptr<GstElement>> _sources;
-                std::vector<std::shared_ptr<GstElement>> _sinks;
-                std::shared_ptr<GstBus> _bus;
-                std::shared_ptr<GstMessage> _msg;
+                std::shared_ptr<GstElement> _bin {nullptr};
+                std::shared_ptr<GstElement> _pipeline {nullptr};
+                std::vector<std::shared_ptr<GstElement>> _sources {nullptr};
+                std::vector<std::shared_ptr<GstElement>> _sinks {nullptr};
+                std::shared_ptr<GstBus> _bus {nullptr};
+                std::shared_ptr<GstMessage> _msg {nullptr};
                 GstStateChangeReturn _ret;
         };
     }
